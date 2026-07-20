@@ -45,6 +45,19 @@ Running log of milestones. Chain is the source of truth; DB is metadata only.
 - [ ] **M6 (stretch) — PayslipRegistry anchor (F6)**
 - [ ] **M7 — UI polish + README + deploy + demo (F7)**
 
+## Adversarial review pass (pre-deploy)
+
+Multi-agent review (5 dimensions → adversarial verify). 9 raw findings; acted on them
+after checking each against reality:
+- **Rejected (false positive):** "native USDC income dropped" — the explorer's `tokentx`
+  normalizes native USDC to the 0x3600/6dp view, verified live (`/api/income` returns
+  correct USDC); the suggested fix would have *broken* working code.
+- **Fixed:** memo discriminator (reject foreign/other-version memos); PDF row date in UTC;
+  breakdown ranking no longer sums USDC+EURC 1:1; `/verify` guards non-array txHashes +
+  ISR caching + 500-tx cap (DoS); memo enrichment cap 150→250; history truncation now
+  surfaced in the UI.
+- **Deferred (documented in README):** tags IDOR (needs SIWE auth); global rate-limiting.
+
 ## Key decisions
 
 - **Memo mechanism:** memo'd payments route through Arc's Memo contract

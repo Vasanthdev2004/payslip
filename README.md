@@ -61,6 +61,22 @@ Connect a wallet, switch to **Arc Testnet** when prompted, and fund it from the
 Full, verified reference: [`docs/arc-notes.md`](docs/arc-notes.md). Progress log:
 [`PROGRESS.md`](PROGRESS.md).
 
+## Known limitations (MVP)
+
+Surfaced by an adversarial multi-agent review pass; the correctness bugs are fixed, these
+are the deliberate scope calls:
+
+- **No wallet authentication yet.** The tags API (private categorization metadata) trusts
+  the `address` param, so tags are readable/writable per address without a signature
+  (IDOR). Proper fix is Sign-In-with-Ethereum; deferred as it's a full auth layer, and
+  this is a testnet MVP. The **chain-derived data (income, verify) needs no auth** — it's
+  public + recomputed.
+- **Verify links are unauthenticated + not globally rate-limited.** Amplification is
+  bounded per link (≤500 disclosed txs + short ISR caching on `/verify`); global
+  rate-limiting belongs at the deploy edge and is deferred.
+- **History indexes the most recent ~6,000 transfers** (memo enrichment: most recent
+  ~250). Truncation is surfaced in the UI rather than silently dropped.
+
 ## License
 
 MIT.

@@ -6,7 +6,9 @@ import { serverClient } from "@/lib/rpc";
 import { recompute } from "@/lib/verify";
 import { VerifyView } from "@/components/verify-view";
 
-export const dynamic = "force-dynamic";
+// Cache each verify render briefly so a flood on one link can't amplify into an RPC
+// storm; still recomputes from chain (just at most once per window).
+export const revalidate = 30;
 
 export const metadata: Metadata = {
   title: "Verified income · Payslip",
@@ -24,8 +26,14 @@ export default async function VerifyPage({
   let txHashes: Hex[] = [];
   let fields: string[] = [];
   try {
-    txHashes = JSON.parse(d.txHashes) as Hex[];
-    fields = JSON.parse(d.fields) as string[];
+    const rawTx = JSON.parse(d.txHashes);
+    txHashes = Array.isArray(rawTx)
+      ? rawTx.filter((h): h is Hex => typeof h === "string")
+      : [];
+    const rawFields = JSON.parse(d.fields);
+    fields = Array.isArray(rawFields)
+      ? rawFields.filter((f): f is string => typeof f === "string")
+      : [];
   } catch {
     /* corrupt record — recompute will simply verify nothing */
   }

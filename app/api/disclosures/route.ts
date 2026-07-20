@@ -14,7 +14,7 @@ const input = z.object({
   txHashes: z
     .array(z.string().regex(/^0x[0-9a-fA-F]{64}$/))
     .min(1, "no transactions to disclose")
-    .max(1000),
+    .max(500), // bounds per-verify RPC fan-out (see /verify caching)
 });
 
 /** POST /api/disclosures → create a selective-disclosure record; returns its id.
