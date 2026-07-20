@@ -22,7 +22,12 @@ Running log of milestones. Chain is the source of truth; DB is metadata only.
   - Feed merges manual tags with on-chain memos (effective memo); untagged rows get
     a Tag action + dialog; categorized % counts both. DB is metadata-only.
   - Verified: tags CRUD round-trip + tsc clean.
-- [ ] **M3 — Pay-with-memo request/payer flow (F3)** ← Memo showcase
+- [x] **M3 — Pay-with-memo request/payer flow (F3)** ✅ ← Memo showcase
+  - Stateless request links (`/pay?…`, no backend record) → payer page renders the
+    memo + sends USDC via `Memo.memo(...)` (write path, no approve needed).
+  - Request builder (`/request`) with live payer-card preview + copyable link.
+  - Verified: calldata round-trip (memo wraps transfer + carries JSON), pages render,
+    tsc clean. Live signature needs a funded wallet.
 - [ ] **M4 — Income Statement + charts + PDF (F4)**
 - [ ] **M5 — Public verify + selective disclosure (F5)**
 - [ ] **M6 (stretch) — PayslipRegistry anchor (F6)**

@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useAccount } from "wagmi";
-import { FileText, Link2, Send } from "lucide-react";
+import { ArrowRight, FileText, Link2, Send } from "lucide-react";
 import { shorten } from "@/lib/utils";
 import { explorerAddress } from "@/config/arc";
 import { Badge } from "@/components/ui/badge";
@@ -10,13 +11,7 @@ import { NetworkGuard } from "@/components/network-guard";
 import { BalanceCards } from "@/components/balance-cards";
 import { IncomeSection } from "@/components/income";
 
-const NEXT_ACTIONS = [
-  {
-    icon: Send,
-    title: "Request payment with memo",
-    body: "Send a client a link that attaches an invoice/project memo to the payment.",
-    milestone: "M3",
-  },
+const COMING_NEXT = [
   {
     icon: FileText,
     title: "Generate income statement",
@@ -64,12 +59,33 @@ export function Dashboard() {
 
         <IncomeSection />
 
-        <section>
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Coming next
+        <section className="space-y-3">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            Get paid
           </h2>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {NEXT_ACTIONS.map((a) => (
+          <Link href="/request" className="block">
+            <Card className="gradient-border hairline-top group relative overflow-hidden p-6 transition-colors hover:bg-secondary/30">
+              <div className="pointer-events-none absolute -right-10 -top-16 size-44 rounded-full bg-brand/10 blur-3xl" />
+              <div className="relative flex items-start gap-4">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
+                  <Send className="size-5" />
+                </span>
+                <div>
+                  <h3 className="flex items-center gap-1.5 font-semibold">
+                    Request payment with memo
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                  </h3>
+                  <p className="mt-1 max-w-lg text-sm text-muted-foreground">
+                    Send a client a link that attaches an invoice/project memo to the
+                    payment — so it arrives here already categorized.
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {COMING_NEXT.map((a) => (
               <Card key={a.title} className="relative p-5">
                 <Badge variant="muted" className="absolute right-3 top-3">
                   {a.milestone}

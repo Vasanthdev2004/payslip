@@ -1,0 +1,209 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { useAccount } from "wagmi";
+import { isAddress } from "viem";
+import { Check, Copy, ExternalLink } from "lucide-react";
+import { buildRequestPath } from "@/lib/request";
+import { TOKENS, type TokenSymbol } from "@/lib/tokens";
+import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
+import { Input, Label } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { PayForm } from "@/components/pay-form";
+
+const CATEGORIES = [
+  "development",
+  "design",
+  "consulting",
+  "writing",
+  "marketing",
+  "retainer",
+  "other",
+];
+
+export function RequestBuilder() {
+  const { address } = useAccount();
+  const [to, setTo] = useState("");
+  const [form, setForm] = useState({
+    token: "USDC" as TokenSymbol,
+    amount: "",
+    client: "",
+    project: "",
+    invoice: "",
+    period: "",
+    category: "",
+    note: "",
+  });
+  const [copied, setCopied] = useState(false);
+
+  // Default the recipient to the connected wallet once it's known.
+  useEffect(() => {
+    if (address && !to) setTo(address);
+  }, [address, to]);
+
+  const set =
+    (k: keyof typeof form) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+      setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const valid = isAddress(to) && Number(form.amount) > 0;
+
+  const path = useMemo(
+    () => (valid ? buildRequestPath({ to: to as `0x${string}`, ...form }) : ""),
+    [valid, to, form],
+  );
+  const url =
+    path && typeof window !== "undefined"
+      ? window.location.origin + path
+      : path;
+
+  async function copy() {
+    if (!url) return;
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
+  }
+
+  return (
+    <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
+      <Card className="p-6">
+        <div className="grid grid-cols-[1fr_140px] gap-3">
+          <div>
+            <Label>Recipient (you)</Label>
+            <Input
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+              placeholder="0x…"
+              className="font-mono text-xs"
+            />
+          </div>
+          <div>
+            <Label>Token</Label>
+            <select
+              value={form.token}
+              onChange={set("token")}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {TOKENS.map((t) => (
+                <option key={t.symbol} value={t.symbol}>
+                  {t.symbol}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="mt-3">
+          <Label>Amount</Label>
+          <Input
+            value={form.amount}
+            onChange={set("amount")}
+            inputMode="decimal"
+            placeholder="1250.00"
+          />
+        </div>
+
+        <div className="mt-6 mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Memo (travels on-chain with the payment)
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label>Client</Label>
+            <Input value={form.client} onChange={set("client")} placeholder="Acme Inc" />
+          </div>
+          <div>
+            <Label>Project</Label>
+            <Input
+              value={form.project}
+              onChange={set("project")}
+              placeholder="Website redesign"
+            />
+          </div>
+          <div>
+            <Label>Invoice #</Label>
+            <Input
+              value={form.invoice}
+              onChange={set("invoice")}
+              placeholder="INV-2026-014"
+            />
+          </div>
+          <div>
+            <Label>Period</Label>
+            <Input type="month" value={form.period} onChange={set("period")} />
+          </div>
+          <div>
+            <Label>Category</Label>
+            <select
+              value={form.category}
+              onChange={set("category")}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <option value="">—</option>
+              {CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <Label>Note</Label>
+            <Input value={form.note} onChange={set("note")} placeholder="March retainer" />
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <Label>Shareable link</Label>
+          <div className="flex gap-2">
+            <Input
+              readOnly
+              value={valid ? url : ""}
+              placeholder="Fill recipient + amount to generate a link"
+              className="font-mono text-xs"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={copy}
+              disabled={!valid}
+              className="shrink-0 gap-1.5"
+            >
+              {copied ? <Check className="size-4 text-primary" /> : <Copy className="size-4" />}
+              {copied ? "Copied" : "Copy"}
+            </Button>
+          </div>
+          {valid && (
+            <a
+              href={path}
+              target="_blank"
+              rel="noreferrer"
+              className={cn(
+                "mt-2 inline-flex items-center gap-1.5 text-xs text-primary hover:underline",
+              )}
+            >
+              Open payer page
+              <ExternalLink className="size-3" />
+            </a>
+          )}
+        </div>
+      </Card>
+
+      {/* live preview of the payer's page */}
+      <div>
+        <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Payer sees
+        </div>
+        {valid ? (
+          <PayForm
+            request={{ to: to as `0x${string}`, ...form }}
+          />
+        ) : (
+          <Card className="flex h-64 items-center justify-center p-6 text-center text-sm text-muted-foreground">
+            Fill in a recipient and amount to preview the payer page.
+          </Card>
+        )}
+      </div>
+    </div>
+  );
+}
