@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { WalletButton } from "@/components/wallet-button";
 import { Check, Copy, ExternalLink, ShieldCheck } from "lucide-react";
+import { usePreviewAddress } from "@/lib/preview";
 import { useIncome } from "@/hooks/use-income";
 import { type Payment } from "@/lib/indexer";
 import { formatAmount } from "@/lib/utils";
@@ -12,6 +13,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { TokenBadge } from "@/components/token-badge";
 
 const ym = (ts: number) => new Date(ts).toISOString().slice(0, 7);
@@ -24,7 +26,9 @@ const FIELD_OPTIONS = [
 ] as const;
 
 export function ShareBuilder() {
-  const { address, isConnected } = useAccount();
+  const { address: wagmiAddress, isConnected } = useAccount();
+  const preview = usePreviewAddress();
+  const address = wagmiAddress ?? preview;
   const { data, isLoading } = useIncome();
   const payments = data?.payments;
 
@@ -94,7 +98,7 @@ export function ShareBuilder() {
     }
   }
 
-  if (!isConnected) {
+  if (!isConnected && !preview) {
     return (
       <Card className="flex flex-col items-center gap-4 p-10 text-center">
         <p className="text-sm text-muted-foreground">
@@ -136,21 +140,27 @@ export function ShareBuilder() {
         </div>
         <div className="space-y-1">
           {FIELD_OPTIONS.map((f) => (
-            <label
+            <div
               key={f.key}
-              className="flex cursor-pointer items-center gap-3 rounded-md px-2 py-2 hover:bg-secondary/50"
+              className="flex items-center gap-3 rounded-md px-2 py-2 transition-colors hover:bg-secondary/50"
             >
-              <input
-                type="checkbox"
+              <Checkbox
+                id={`field-${f.key}`}
                 checked={fields[f.key]}
-                onChange={(e) =>
-                  setFields((s) => ({ ...s, [f.key]: e.target.checked }))
+                onCheckedChange={(v) =>
+                  setFields((s) => ({ ...s, [f.key]: v === true }))
                 }
-                className="size-4 accent-primary"
               />
-              <span className="text-sm font-medium">{f.label}</span>
-              <span className="ml-auto text-xs text-muted-foreground">{f.hint}</span>
-            </label>
+              <label
+                htmlFor={`field-${f.key}`}
+                className="flex flex-1 cursor-pointer items-center gap-3"
+              >
+                <span className="text-sm font-medium">{f.label}</span>
+                <span className="ml-auto text-xs text-muted-foreground">
+                  {f.hint}
+                </span>
+              </label>
+            </div>
           ))}
         </div>
         <p className="mt-3 text-xs text-muted-foreground">

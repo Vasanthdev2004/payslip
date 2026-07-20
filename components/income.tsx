@@ -242,18 +242,18 @@ function IncomeTable({ rows, onTag }: { rows: Row[]; onTag: (r: Row) => void }) 
             </tr>
           </thead>
           <tbody>
-            {shown.map((p) => (
+            {shown.map((p, i) => (
               <tr
-                key={p.txHash}
+                key={`${p.txHash}-${i}`}
                 className="border-b border-border/60 last:border-0 hover:bg-secondary/40"
               >
                 <td
-                  className="whitespace-nowrap px-5 py-3.5 text-muted-foreground"
+                  className="whitespace-nowrap px-5 py-3 text-muted-foreground"
                   title={new Date(p.timestamp).toLocaleString()}
                 >
                   {smartDate(p.timestamp)}
                 </td>
-                <td className="px-5 py-3.5">
+                <td className="px-5 py-3">
                   <a
                     href={explorerAddress(p.from)}
                     target="_blank"
@@ -264,16 +264,16 @@ function IncomeTable({ rows, onTag }: { rows: Row[]; onTag: (r: Row) => void }) 
                     {shorten(p.from)}
                   </a>
                 </td>
-                <td className="px-5 py-3.5">
+                <td className="px-5 py-3">
                   <MemoCell row={p} onTag={onTag} />
                 </td>
-                <td className="whitespace-nowrap px-5 py-3.5 text-right">
+                <td className="whitespace-nowrap px-5 py-3 text-right">
                   <span className="inline-flex items-center gap-1.5 font-mono font-medium nums">
                     {formatAmount(p.amount, p.tokenDecimals)}
                     <TokenBadge symbol={p.tokenSymbol} size="sm" />
                   </span>
                 </td>
-                <td className="px-5 py-3.5">
+                <td className="px-5 py-3">
                   <a
                     href={explorerTx(p.txHash)}
                     target="_blank"
@@ -303,15 +303,13 @@ function MemoCell({ row, onTag }: { row: Row; onTag: (r: Row) => void }) {
   const m = row.displayMemo;
   if (!m) {
     return (
-      <Button
-        variant="outline"
-        size="sm"
-        className="h-7 gap-1 text-xs text-muted-foreground"
+      <button
         onClick={() => onTag(row)}
+        className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs text-muted-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
       >
         <Plus className="size-3" />
         Tag
-      </Button>
+      </button>
     );
   }
   return (

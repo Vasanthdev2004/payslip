@@ -5,15 +5,17 @@ import { ExternalLink } from "lucide-react";
 import { TOKENS } from "@/lib/tokens";
 import { ERC20_ABI } from "@/lib/abi";
 import { ARC } from "@/config/arc";
-import { formatAmount, cn } from "@/lib/utils";
-import { Card } from "@/components/ui/card";
+import { usePreviewAddress } from "@/lib/preview";
+import { formatAmount } from "@/lib/utils";
+import { TokenLogo } from "@/components/token-logo";
 
-/** Live USDC/EURC balances for the connected wallet (a sanity check that the
- *  Arc RPC + token addresses resolve). Real income lands in M1's indexer. */
+/** Compact "in wallet now" strip — secondary to income. Real USDC/EURC balances. */
 export function BalanceCards() {
-  const { address, isConnected } = useAccount();
+  const { address: wagmiAddress } = useAccount();
+  const preview = usePreviewAddress();
+  const address = wagmiAddress ?? preview;
 
-  const { data, isLoading } = useReadContracts({
+  const { data } = useReadContracts({
     allowFailure: true,
     contracts: TOKENS.map((t) => ({
       address: t.address,
@@ -25,51 +27,32 @@ export function BalanceCards() {
   });
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-xl border border-border bg-card/40 px-4 py-3 text-sm">
+      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        In wallet
+      </span>
       {TOKENS.map((t, i) => {
-        const result = data?.[i];
+        const r = data?.[i];
         const value =
-          result && result.status === "success"
-            ? (result.result as bigint)
-            : 0n;
+          r && r.status === "success" ? (r.result as bigint) : 0n;
         return (
-          <Card key={t.symbol} className="p-5">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-muted-foreground">
-                {t.name}
-              </span>
-              <span
-                className={cn(
-                  "rounded-full px-2 py-0.5 text-xs font-semibold",
-                  t.symbol === "USDC"
-                    ? "bg-primary/15 text-primary"
-                    : "bg-sky-500/15 text-sky-500",
-                )}
-              >
-                {t.symbol}
-              </span>
-            </div>
-            <div className="mt-3 font-mono text-2xl font-semibold tabular-nums">
-              {isConnected && isLoading ? (
-                <span className="text-muted-foreground">—</span>
-              ) : (
-                formatAmount(value, t.decimals)
-              )}
-            </div>
-            <div className="mt-1 text-xs text-muted-foreground">
-              wallet balance
-            </div>
-          </Card>
+          <span key={t.symbol} className="inline-flex items-center gap-1.5">
+            <TokenLogo symbol={t.symbol} className="size-4" />
+            <span className="font-mono font-medium tabular-nums">
+              {formatAmount(value, t.decimals)}
+            </span>
+            <span className="text-muted-foreground">{t.symbol}</span>
+          </span>
         );
       })}
       <a
         href={ARC.faucetUrl}
         target="_blank"
         rel="noreferrer"
-        className="sm:col-span-2 inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+        className="ml-auto inline-flex items-center gap-1 text-xs text-primary hover:underline"
       >
-        Need test funds? Get USDC/EURC from the Circle faucet
-        <ExternalLink className="size-3.5" />
+        Fund testnet wallet
+        <ExternalLink className="size-3" />
       </a>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useAccount } from "wagmi";
+import { usePreviewAddress } from "@/lib/preview";
 import { ArrowRight, ExternalLink, FileText, Link2, Send } from "lucide-react";
 import { addressGradient, shorten } from "@/lib/utils";
 import { explorerAddress } from "@/config/arc";
@@ -34,7 +35,9 @@ const ACTIONS = [
 ];
 
 export function Dashboard() {
-  const { address } = useAccount();
+  const { address: wagmiAddress } = useAccount();
+  const preview = usePreviewAddress();
+  const address = wagmiAddress ?? preview;
 
   return (
     <>

@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
+import { usePreviewAddress } from "@/lib/preview";
 import { fromDTO, type Payment, type PaymentDTO } from "@/lib/indexer";
 
 export interface IncomeResult {
@@ -11,7 +12,9 @@ export interface IncomeResult {
 
 /** Loads the connected wallet's incoming USDC/EURC payments from /api/income. */
 export function useIncome() {
-  const { address } = useAccount();
+  const { address: wagmiAddress } = useAccount();
+  const preview = usePreviewAddress();
+  const address = wagmiAddress ?? preview;
 
   return useQuery({
     queryKey: ["income", address],

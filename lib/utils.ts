@@ -54,9 +54,10 @@ export function smartDate(ts: number): string {
   return formatDate(ts);
 }
 
-/** Deterministic 2-stop gradient from an address — a lightweight identicon. */
+/** Deterministic identicon gradient from an address, kept in the emerald→cyan
+ *  brand family (hue 150–214) so avatars never clash with the theme. */
 export function addressGradient(address: string): string {
-  const a = parseInt(address.slice(2, 8) || "0", 16) % 360;
-  const b = (a + 40 + (parseInt(address.slice(-4) || "0", 16) % 80)) % 360;
-  return `linear-gradient(135deg, hsl(${a} 70% 45%), hsl(${b} 80% 55%))`;
+  const a = 150 + (parseInt(address.slice(2, 8) || "0", 16) % 60);
+  const b = a + 24 + (parseInt(address.slice(-4) || "0", 16) % 20);
+  return `linear-gradient(135deg, hsl(${a} 62% 42%), hsl(${b} 78% 55%))`;
 }

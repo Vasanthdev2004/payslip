@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
+import { usePreviewAddress } from "@/lib/preview";
 
 export interface TagRecord {
   id: string;
@@ -29,7 +30,9 @@ export interface TagInput {
 
 /** All manual tags for the connected wallet, keyed later by tx hash. */
 export function useTags() {
-  const { address } = useAccount();
+  const { address: wagmiAddress } = useAccount();
+  const preview = usePreviewAddress();
+  const address = wagmiAddress ?? preview;
   return useQuery({
     queryKey: ["tags", address],
     enabled: Boolean(address),

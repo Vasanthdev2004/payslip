@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { WalletButton } from "@/components/wallet-button";
 import { Download, Loader2 } from "lucide-react";
+import { usePreviewAddress } from "@/lib/preview";
 import { useIncome } from "@/hooks/use-income";
 import { useTags } from "@/hooks/use-tags";
 import { buildStatement, type TagLike } from "@/lib/statement";
@@ -19,7 +20,9 @@ import { StatementChart } from "@/components/statement-chart";
 const ym = (ts: number) => new Date(ts).toISOString().slice(0, 7);
 
 export function Statement() {
-  const { address, isConnected } = useAccount();
+  const { address: wagmiAddress, isConnected } = useAccount();
+  const preview = usePreviewAddress();
+  const address = wagmiAddress ?? preview;
   const { data, isLoading } = useIncome();
   const payments = data?.payments;
   const { data: tags } = useTags();
@@ -59,7 +62,7 @@ export function Statement() {
     }
   }
 
-  if (!isConnected) {
+  if (!isConnected && !preview) {
     return (
       <Card className="flex flex-col items-center gap-4 p-10 text-center">
         <p className="text-sm text-muted-foreground">

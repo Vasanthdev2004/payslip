@@ -120,8 +120,8 @@ function StatementDoc({
           <Text style={[styles.th, { flex: 3 }]}>Client</Text>
           <Text style={[styles.th, styles.cellNum]}>Amount</Text>
         </View>
-        {txs.map((t) => (
-          <View key={t.txHash} style={styles.row}>
+        {txs.map((t, i) => (
+          <View key={`${t.txHash}-${i}`} style={styles.row}>
             <View style={{ flex: 5 }}>
               <View style={{ flexDirection: "row" }}>
                 <Text style={{ flex: 2 }}>
