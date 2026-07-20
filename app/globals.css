@@ -105,23 +105,48 @@
     font-family: var(--font-geist-mono), ui-monospace, monospace;
   }
 
-  /* Emerald→cyan gradient text, slowly flowing */
+  /* Emerald→cyan gradient text with a sweeping shine glint.
+     Two clipped layers: a moving white band (shine) over a flowing base gradient. */
   .text-gradient {
-    background-image: linear-gradient(
-      100deg,
-      hsl(var(--brand-3)),
-      hsl(var(--brand-2)),
-      hsl(var(--brand-3))
-    );
-    background-size: 200% auto;
+    background-image:
+      linear-gradient(
+        110deg,
+        transparent 36%,
+        hsl(0 0% 100% / 0.85) 50%,
+        transparent 64%
+      ),
+      linear-gradient(
+        100deg,
+        hsl(var(--brand-3)),
+        hsl(var(--brand-2)),
+        hsl(var(--brand-3))
+      );
+    background-size:
+      250% 100%,
+      200% 100%;
+    background-position:
+      -60% center,
+      0% center;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: text-gradient-flow 6s linear infinite;
+    animation: text-gradient-shine 4.5s ease-in-out infinite;
   }
-  @keyframes text-gradient-flow {
-    to {
-      background-position: 200% center;
+  @keyframes text-gradient-shine {
+    0% {
+      background-position:
+        -60% center,
+        0% center;
+    }
+    55% {
+      background-position:
+        160% center,
+        110% center;
+    }
+    100% {
+      background-position:
+        160% center,
+        200% center;
     }
   }
   @media (prefers-reduced-motion: reduce) {
