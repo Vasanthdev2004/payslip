@@ -10,7 +10,12 @@ Running log of milestones. Chain is the source of truth; DB is metadata only.
   - [x] Arc testnet chain configured in [`config/arc.ts`](config/arc.ts)
   - [x] Memo adapter interface + verified ABI in [`lib/memo/`](lib/memo)
   - [x] `npm run build` green; dev server renders landing + connect, console clean
-- [ ] **M1 — Connect + index incoming USDC/EURC (F1)**
+- [x] **M1 — Connect + index incoming USDC/EURC (F1)** ✅
+  - Explorer `tokentx` API for history (RPC `eth_getLogs` is capped to a 10k range
+    over ~52M blocks — infeasible to scan), memo enrichment via RPC tx receipts.
+  - Server route `/api/income` → `useIncome` hook → summary tiles + memo-aware table.
+  - Verified against a real Arc recipient (6k transfers parsed; totals from all,
+    table capped to 100 rows). Chain stays the source of truth.
 - [ ] **M2 — Memo adapter decode + tagging (F2)**
 - [ ] **M3 — Pay-with-memo request/payer flow (F3)** ← Memo showcase
 - [ ] **M4 — Income Statement + charts + PDF (F4)**

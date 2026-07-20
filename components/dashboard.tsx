@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { NetworkGuard } from "@/components/network-guard";
 import { BalanceCards } from "@/components/balance-cards";
+import { IncomeSection } from "@/components/income";
 
 const NEXT_ACTIONS = [
   {
@@ -61,19 +62,7 @@ export function Dashboard() {
 
         <BalanceCards />
 
-        <section>
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Your income
-          </h2>
-          <Card className="flex flex-col items-center justify-center gap-2 border-dashed p-10 text-center">
-            <p className="font-medium">Income feed lands in M1.</p>
-            <p className="max-w-md text-sm text-muted-foreground">
-              Next milestone indexes every incoming USDC &amp; EURC payment to this
-              wallet from Arc, decodes its Transaction Memo, and lists each with a
-              verifiable tx hash.
-            </p>
-          </Card>
-        </section>
+        <IncomeSection />
 
         <section>
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
