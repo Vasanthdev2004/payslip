@@ -105,16 +105,29 @@
     font-family: var(--font-geist-mono), ui-monospace, monospace;
   }
 
-  /* Emerald→cyan gradient text */
+  /* Emerald→cyan gradient text, slowly flowing */
   .text-gradient {
     background-image: linear-gradient(
       100deg,
       hsl(var(--brand-3)),
-      hsl(var(--brand-2))
+      hsl(var(--brand-2)),
+      hsl(var(--brand-3))
     );
+    background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    animation: text-gradient-flow 6s linear infinite;
+  }
+  @keyframes text-gradient-flow {
+    to {
+      background-position: 200% center;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .text-gradient {
+      animation: none;
+    }
   }
 
   /* 1px top highlight to fake light hitting a raised surface */

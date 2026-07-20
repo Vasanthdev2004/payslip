@@ -157,15 +157,13 @@ export function LandingHero() {
             </ol>
           </Reveal>
 
-          <Reveal className="relative mx-auto w-full max-w-sm" delay={120}>
+          <div className="relative mx-auto w-full max-w-sm">
             <div className="absolute -inset-8 -z-10 rounded-full bg-brand/20 blur-3xl" />
-            <div className="animate-float">
-              <PassportCard />
-            </div>
+            <PassportCard />
             <p className="mt-4 text-center text-xs text-white/35">
               Example proof — the real one is recomputed from your Arc history.
             </p>
-          </Reveal>
+          </div>
         </div>
       </section>
 
