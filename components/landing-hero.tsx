@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   ArrowRight,
   CheckCircle2,
@@ -15,6 +14,7 @@ import { FluidBackground } from "./fluid-background";
 import { WordReveal } from "./word-reveal";
 import { PassportCard } from "./passport-card";
 import { Reveal } from "./reveal";
+import { WalletButton } from "./wallet-button";
 import { Logo } from "./logo";
 
 const STEPS = [
@@ -64,11 +64,7 @@ export function LandingHero() {
             >
               How it works
             </a>
-            <ConnectButton
-              accountStatus="address"
-              chainStatus="none"
-              showBalance={false}
-            />
+            <WalletButton label="Connect wallet" size="sm" />
           </div>
         </header>
 
@@ -109,7 +105,7 @@ export function LandingHero() {
             className="animate-rise mt-9 flex flex-col items-center gap-4 sm:flex-row"
             style={{ animationDelay: "1350ms" }}
           >
-            <ConnectButton label="Connect wallet to start" />
+            <WalletButton label="Connect wallet to start" size="lg" glow />
             <a
               href="#how"
               className="group inline-flex items-center gap-1.5 text-sm font-medium text-white/80 transition-colors hover:text-white"
@@ -294,7 +290,7 @@ export function LandingHero() {
             evidence a bank can check.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <ConnectButton label="Connect wallet — it's free" />
+            <WalletButton label="Connect wallet — it's free" size="lg" glow />
             <a
               href="https://github.com/Vasanthdev2004/payslip"
               target="_blank"

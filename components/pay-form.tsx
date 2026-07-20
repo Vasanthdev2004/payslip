@@ -9,7 +9,7 @@ import {
   useWriteContract,
 } from "wagmi";
 import { parseUnits } from "viem";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { WalletButton } from "@/components/wallet-button";
 import { CheckCircle2, ExternalLink, Loader2, ShieldCheck } from "lucide-react";
 import { buildPayWithMemo } from "@/lib/memo";
 import { tokenBySymbol } from "@/lib/tokens";
@@ -139,7 +139,7 @@ export function PayForm({ request }: { request: PaymentRequest }) {
           </p>
         ) : !isConnected ? (
           <div className="flex flex-col items-center gap-3">
-            <ConnectButton label="Connect wallet to pay" />
+            <WalletButton label="Connect wallet to pay" glow />
             <p className="text-xs text-muted-foreground">
               You&apos;ll send this exact amount and memo through Arc&apos;s Memo
               contract.

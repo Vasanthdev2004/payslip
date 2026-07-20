@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useAccount } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { WalletButton } from "@/components/wallet-button";
 import { Download, Loader2 } from "lucide-react";
 import { useIncome } from "@/hooks/use-income";
 import { useTags } from "@/hooks/use-tags";
@@ -65,7 +65,7 @@ export function Statement() {
         <p className="text-sm text-muted-foreground">
           Connect your wallet to generate an income statement.
         </p>
-        <ConnectButton />
+        <WalletButton />
       </Card>
     );
   }

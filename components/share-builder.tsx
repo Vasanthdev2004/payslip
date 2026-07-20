@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useAccount } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { WalletButton } from "@/components/wallet-button";
 import { Check, Copy, ExternalLink, ShieldCheck } from "lucide-react";
 import { useIncome } from "@/hooks/use-income";
 import { type Payment } from "@/lib/indexer";
@@ -100,7 +100,7 @@ export function ShareBuilder() {
         <p className="text-sm text-muted-foreground">
           Connect your wallet to build a verifiable income link.
         </p>
-        <ConnectButton />
+        <WalletButton />
       </Card>
     );
   }

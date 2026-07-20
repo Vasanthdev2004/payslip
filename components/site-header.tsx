@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAccount } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
+import { WalletButton } from "./wallet-button";
 
 const NAV = [
   { label: "Dashboard", href: "/" },
@@ -57,11 +57,7 @@ export function SiteHeader() {
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <ConnectButton
-            accountStatus="address"
-            chainStatus="icon"
-            showBalance={false}
-          />
+          <WalletButton size="sm" />
         </div>
       </div>
       {/* mobile nav row */}
