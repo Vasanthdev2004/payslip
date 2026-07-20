@@ -4,12 +4,21 @@ import { useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { isAddress } from "viem";
 import { Check, Copy, ExternalLink } from "lucide-react";
+import { toast } from "sonner";
 import { buildRequestPath } from "@/lib/request";
 import { TOKENS, type TokenSymbol } from "@/lib/tokens";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
-import { Input, Label } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { PayForm } from "@/components/pay-form";
 
 const CATEGORIES = [
@@ -62,6 +71,9 @@ export function RequestBuilder() {
     if (!url) return;
     await navigator.clipboard.writeText(url);
     setCopied(true);
+    toast.success("Payment link copied", {
+      description: "Send it to your client — the memo rides along.",
+    });
     setTimeout(() => setCopied(false), 1800);
   }
 
@@ -80,17 +92,23 @@ export function RequestBuilder() {
           </div>
           <div>
             <Label>Token</Label>
-            <select
+            <Select
               value={form.token}
-              onChange={set("token")}
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              onValueChange={(v) =>
+                setForm((f) => ({ ...f, token: v as TokenSymbol }))
+              }
             >
-              {TOKENS.map((t) => (
-                <option key={t.symbol} value={t.symbol}>
-                  {t.symbol}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {TOKENS.map((t) => (
+                  <SelectItem key={t.symbol} value={t.symbol}>
+                    {t.symbol}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -134,18 +152,21 @@ export function RequestBuilder() {
           </div>
           <div>
             <Label>Category</Label>
-            <select
+            <Select
               value={form.category}
-              onChange={set("category")}
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              onValueChange={(v) => setForm((f) => ({ ...f, category: v }))}
             >
-              <option value="">—</option>
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="capitalize">
+                <SelectValue placeholder="—" />
+              </SelectTrigger>
+              <SelectContent>
+                {CATEGORIES.map((c) => (
+                  <SelectItem key={c} value={c} className="capitalize">
+                    {c}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <Label>Note</Label>

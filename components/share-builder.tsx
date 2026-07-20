@@ -7,8 +7,10 @@ import { Check, Copy, ExternalLink, ShieldCheck } from "lucide-react";
 import { useIncome } from "@/hooks/use-income";
 import { type Payment } from "@/lib/indexer";
 import { formatAmount } from "@/lib/utils";
+import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
-import { Input, Label } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { TokenBadge } from "@/components/token-badge";
 
@@ -210,6 +212,9 @@ function ShareResult({ url, onReset }: { url: string; onReset: () => void }) {
   async function copy() {
     await navigator.clipboard.writeText(url);
     setCopied(true);
+    toast.success("Verify link copied", {
+      description: "Anyone who opens it recomputes your income from Arc.",
+    });
     setTimeout(() => setCopied(false), 1800);
   }
   return (

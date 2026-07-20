@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 export function CopyButton({
@@ -21,6 +22,7 @@ export function CopyButton({
       onClick={async () => {
         await navigator.clipboard.writeText(value);
         setCopied(true);
+        toast.success("Copied to clipboard");
         setTimeout(() => setCopied(false), 1600);
       }}
       className={cn(
