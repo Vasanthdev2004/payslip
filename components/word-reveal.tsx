@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ElementType } from "react";
+import { Fragment, useEffect, useState, type ElementType } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -36,7 +36,7 @@ export function WordReveal({
   return (
     <Tag className={className}>
       {words.map((word, i) => (
-        <span key={i} className="inline-block">
+        <Fragment key={i}>
           <span
             className={cn("inline-block will-change-transform", wordClassName)}
             style={{
@@ -48,8 +48,8 @@ export function WordReveal({
           >
             {word}
           </span>
-          {i < words.length - 1 ? " " : ""}
-        </span>
+          {i < words.length - 1 ? " " : null}
+        </Fragment>
       ))}
     </Tag>
   );
