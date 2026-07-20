@@ -1,26 +1,48 @@
 import { cn } from "@/lib/utils";
 
+/** Kred K-mark: split-stroke K, emerald→cyan gradient. */
+export function KMark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      fill="none"
+      aria-hidden
+      className={cn("shrink-0", className)}
+    >
+      <defs>
+        <linearGradient
+          id="kred-mark"
+          x1="20"
+          y1="16"
+          x2="82"
+          y2="84"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#31DB90" />
+          <stop offset="1" stopColor="#1FC7E6" />
+        </linearGradient>
+      </defs>
+      <g
+        fill="url(#kred-mark)"
+        stroke="url(#kred-mark)"
+        strokeWidth="2.4"
+        strokeLinejoin="round"
+      >
+        {/* stem */}
+        <rect x="25" y="23" width="16" height="54" rx="5" strokeWidth="0" />
+        {/* upper arm */}
+        <path d="M44 47 L61 23 L79 23 Z" />
+        {/* lower leg */}
+        <path d="M44 53 L55 53 L80 77 L69 77 Z" />
+      </g>
+    </svg>
+  );
+}
+
 export function Logo({ className }: { className?: string }) {
   return (
     <span className={cn("flex items-center gap-2 font-semibold", className)}>
-      <svg
-        width="26"
-        height="26"
-        viewBox="0 0 32 32"
-        fill="none"
-        aria-hidden
-        className="shrink-0"
-      >
-        <rect width="32" height="32" rx="9" fill="hsl(var(--primary))" />
-        {/* K */}
-        <path
-          d="M11.5 8.5V23.5M20.5 8.5 12.5 16.2M12.5 15.8 20.5 23.5"
-          stroke="hsl(var(--primary-foreground))"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      <KMark className="size-[1.15em]" />
       <span className="tracking-tight">Kred</span>
     </span>
   );
