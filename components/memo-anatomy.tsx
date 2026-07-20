@@ -1,17 +1,12 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
-import {
-  ArrowDownLeft,
-  Check,
-  Copy,
-  FileJson2,
-  ShieldCheck,
-} from "lucide-react";
+import { Check, Copy, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Reveal } from "./reveal";
-import { TokenBadge } from "./token-badge";
+import { TokenLogo } from "./token-logo";
 
 /* ------------------------------------------------------- syntax tokens */
 const C = ({ children }: { children: ReactNode }) => (
@@ -65,12 +60,34 @@ const CALL_TEXT = `Memo.memo(
   }
 )`;
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+const cardIn = { hidden: {}, show: { transition: { staggerChildren: 0.11, delayChildren: 0.1 } } };
+const linesIn = { hidden: {}, show: { transition: { staggerChildren: 0.045 } } };
+const item = {
+  hidden: { opacity: 0, y: 14 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
+};
+const lineItem = {
+  hidden: { opacity: 0, x: -10 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.4, ease: EASE } },
+};
+const viewport = { once: true, amount: 0.25 } as const;
+
 function CodeCard() {
   const [copied, setCopied] = useState(false);
   return (
-    <div className="gradient-border relative flex h-full flex-col overflow-hidden rounded-xl bg-[#0a0f14] shadow-glow">
+    <motion.div
+      variants={cardIn}
+      initial="hidden"
+      whileInView="show"
+      viewport={viewport}
+      className="gradient-border relative flex h-full flex-col overflow-hidden rounded-xl bg-[#0a0f14] shadow-glow"
+    >
       {/* header */}
-      <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+      <motion.div
+        variants={item}
+        className="flex items-center gap-2 border-b border-white/10 px-4 py-3"
+      >
         <span className="size-2.5 rounded-full bg-[#ff5f57]" />
         <span className="size-2.5 rounded-full bg-[#febc2e]" />
         <span className="size-2.5 rounded-full bg-[#28c840]" />
@@ -96,12 +113,19 @@ function CodeCard() {
             <Copy className="size-3.5" />
           )}
         </button>
-      </div>
+      </motion.div>
 
-      {/* code */}
-      <div className="flex-1 overflow-x-auto py-4 font-mono text-[12.5px] leading-[1.9]">
+      {/* code — lines assemble one by one */}
+      <motion.div
+        variants={linesIn}
+        className="flex-1 overflow-x-auto py-4 font-mono text-[12.5px] leading-[1.9]"
+      >
         {LINES.map((line, i) => (
-          <div key={i} className="flex items-stretch pr-4">
+          <motion.div
+            key={i}
+            variants={lineItem}
+            className="flex items-stretch pr-4"
+          >
             <span className="w-10 shrink-0 select-none pr-3 text-right text-white/20">
               {i + 1}
             </span>
@@ -116,34 +140,46 @@ function CodeCard() {
             >
               {line.node}
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/** "Event emitted" broadcast pulse. */
+function EmitPulse() {
+  return (
+    <span className="relative flex size-9 items-center justify-center">
+      <span className="absolute size-9 rounded-full border border-brand-3/40 [animation:ping_1.8s_cubic-bezier(0,0,0.2,1)_infinite] motion-reduce:hidden" />
+      <span className="absolute size-6 rounded-full border border-brand-3/30" />
+      <span className="relative size-2.5 rounded-full bg-brand-3 shadow-[0_0_10px_hsl(var(--brand-3)/0.8)]" />
+    </span>
   );
 }
 
 function EventCard({
-  icon: Icon,
+  icon,
   kind,
   children,
 }: {
-  icon: typeof ArrowDownLeft;
+  icon: ReactNode;
   kind: string;
   children: ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-      <div className="flex items-center gap-2">
-        <span className="flex size-7 items-center justify-center rounded-md bg-brand/15 text-brand-3">
-          <Icon className="size-4" />
-        </span>
+    <motion.div
+      variants={item}
+      className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
+    >
+      <div className="flex items-center gap-2.5">
+        {icon}
         <span className="font-mono text-[11px] uppercase tracking-wider text-white/45">
           {kind} event
         </span>
       </div>
       <div className="mt-3">{children}</div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -157,14 +193,25 @@ function Chip({ children }: { children: ReactNode }) {
 
 function Outcome() {
   return (
-    <div className="flex h-full flex-col">
-      <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-white/40">
+    <motion.div
+      variants={cardIn}
+      initial="hidden"
+      whileInView="show"
+      viewport={viewport}
+      className="flex h-full flex-col"
+    >
+      <motion.div
+        variants={item}
+        className="mb-3 text-xs font-semibold uppercase tracking-wider text-white/40"
+      >
         Emits, in one transaction
-      </div>
+      </motion.div>
 
-      <EventCard icon={ArrowDownLeft} kind="Transfer">
+      <EventCard
+        kind="Transfer"
+        icon={<TokenLogo symbol="USDC" animated className="size-9" />}
+      >
         <div className="flex items-baseline gap-2">
-          <TokenBadge symbol="USDC" size="sm" />
           <span className="font-mono text-xl font-semibold text-white tabular-nums">
             1,250.00
           </span>
@@ -176,13 +223,16 @@ function Outcome() {
       </EventCard>
 
       {/* bundle connector */}
-      <div className="relative my-2 flex justify-center">
+      <motion.div
+        variants={item}
+        className="relative my-2 flex justify-center"
+      >
         <span className="flex size-6 items-center justify-center rounded-full border border-white/10 bg-[#0a0f14] text-sm text-brand-3">
           +
         </span>
-      </div>
+      </motion.div>
 
-      <EventCard icon={FileJson2} kind="Memo">
+      <EventCard kind="Memo" icon={<EmitPulse />}>
         <div className="flex flex-wrap gap-1.5">
           <Chip>client: Acme Inc</Chip>
           <Chip>invoice: INV-2026-014</Chip>
@@ -195,13 +245,17 @@ function Outcome() {
           "No approve needed — the payer signs a single transaction.",
           "Payslip reads both events back and files it under Acme Inc, automatically.",
         ].map((t) => (
-          <div key={t} className="flex items-start gap-2 text-sm text-white/60">
+          <motion.div
+            key={t}
+            variants={item}
+            className="flex items-start gap-2 text-sm text-white/60"
+          >
             <ShieldCheck className="mt-0.5 size-4 shrink-0 text-brand-3" />
             <span>{t}</span>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -223,12 +277,10 @@ export function MemoAnatomy() {
           </p>
         </Reveal>
 
-        <Reveal delay={120}>
-          <div className="mt-14 grid items-stretch gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <CodeCard />
-            <Outcome />
-          </div>
-        </Reveal>
+        <div className="mt-14 grid items-stretch gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <CodeCard />
+          <Outcome />
+        </div>
       </div>
     </section>
   );
