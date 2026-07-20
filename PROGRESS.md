@@ -42,7 +42,7 @@ Running log of milestones. Chain is the source of truth; DB is metadata only.
     backing txs always shown (that's what makes it verifiable).
   - Verified end-to-end against a real Arc address: recomputed totals render, an
     unverifiable tx is honestly excluded, bogus id 404s, tsc clean.
-- [ ] **M6 (stretch) — PayslipRegistry anchor (F6)**
+- [ ] **M6 (stretch) — KredRegistry anchor (F6)**
 - [~] **M7 — deploy ✅ (Railway) · polish/demo remaining**
   - Live: https://payslip-production-409a.up.railway.app
   - Railway project `payslip` + managed Postgres (persistent volume); Prisma on

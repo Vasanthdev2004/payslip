@@ -33,7 +33,7 @@ export function PayPage() {
       )}
 
       <p className="mt-6 text-center text-xs text-muted-foreground">
-        Powered by Payslip on Arc · the memo travels with your payment.
+        Powered by Kred on Arc · the memo travels with your payment.
       </p>
     </div>
   );

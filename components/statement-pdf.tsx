@@ -67,10 +67,10 @@ function StatementDoc({
   const hidden = statement.txs.length - txs.length;
 
   return (
-    <Document title="Payslip Income Statement">
+    <Document title="Kred Income Statement">
       <Page size="A4" style={styles.page}>
         <View style={styles.brandRow}>
-          <Text style={styles.brand}>Payslip</Text>
+          <Text style={styles.brand}>Kred</Text>
           <Text style={styles.seal}>VERIFIABLE ON ARC</Text>
         </View>
 
@@ -141,7 +141,7 @@ function StatementDoc({
 
         <Text style={styles.footer}>
           Every line is backed by an on-chain transaction on Arc — the tx hash under
-          each row can be independently verified on the block explorer. Payslip stores
+          each row can be independently verified on the block explorer. Kred stores
           no amounts; figures are derived from chain data.
           {verifyUrl ? ` Verify online: ${verifyUrl}` : ""}
         </Text>
@@ -160,7 +160,7 @@ export async function downloadStatementPdf(opts: {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `payslip-income-${opts.statement.from}_${opts.statement.to}.pdf`;
+  a.download = `kred-income-${opts.statement.from}_${opts.statement.to}.pdf`;
   document.body.appendChild(a);
   a.click();
   a.remove();

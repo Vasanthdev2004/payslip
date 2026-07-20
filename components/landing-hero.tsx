@@ -131,11 +131,11 @@ export function LandingHero() {
           <Reveal>
             <p className="text-sm font-medium text-brand-3">How it works</p>
             <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">
-              A payslip your bank can verify itself
+              Proof of income your bank can verify itself
             </h2>
             <p className="mt-4 max-w-md text-white/55">
               No product turns on-chain payment history into disclosable income
-              proof. Payslip is that credential layer — Arc-native, and trustless
+              proof. Kred is that credential layer — Arc-native, and trustless
               by construction.
             </p>
 
@@ -205,7 +205,7 @@ export function LandingHero() {
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <WalletButton label="Connect wallet — it's free" size="lg" glow />
             <a
-              href="https://github.com/Vasanthdev2004/payslip"
+              href="https://github.com/Vasanthdev2004/kred"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 text-sm text-white/70 transition-colors hover:text-white"

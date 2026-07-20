@@ -7,8 +7,8 @@ import { arcTestnet } from "@/config/arc";
  * only disables WC-based wallets. Set NEXT_PUBLIC_WC_PROJECT_ID for the full list.
  */
 export const wagmiConfig = getDefaultConfig({
-  appName: "Payslip",
-  projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || "PAYSLIP_DEMO",
+  appName: "Kred",
+  projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || "KRED_DEMO",
   chains: [arcTestnet],
   transports: {
     [arcTestnet.id]: http(),

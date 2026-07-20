@@ -26,7 +26,7 @@ import { ERC20_ABI, MEMO_ABI } from "@/lib/abi";
 /** App-level memo schema encoded into the on-chain `memoData` bytes. */
 export const MEMO_SCHEMA_VERSION = 1;
 
-export const payslipMemoSchema = z.object({
+export const kredMemoSchema = z.object({
   v: z.number().int().default(MEMO_SCHEMA_VERSION),
   client: z.string().max(120).optional(),
   project: z.string().max(120).optional(),
@@ -40,15 +40,15 @@ export const payslipMemoSchema = z.object({
 });
 
 // Input type: `v` and all fields optional for callers; `parse` fills the version.
-export type PayslipMemo = z.input<typeof payslipMemoSchema>;
+export type KredMemo = z.input<typeof kredMemoSchema>;
 
 export const MEMO_ADDRESS = getAddress(ARC.contracts.memo);
 
 /* ---------------------------------------------------------------- encode */
 
 /** Compact JSON (drop undefined keys) → UTF-8 → hex bytes for `memoData`. */
-export function encodeMemoData(memo: PayslipMemo): Hex {
-  const parsed = payslipMemoSchema.parse(memo); // fills `v` default
+export function encodeMemoData(memo: KredMemo): Hex {
+  const parsed = kredMemoSchema.parse(memo); // fills `v` default
   const compact: Record<string, unknown> = {};
   for (const [k, val] of Object.entries(parsed)) {
     if (val !== undefined && val !== "") compact[k] = val;
@@ -57,7 +57,7 @@ export function encodeMemoData(memo: PayslipMemo): Hex {
 }
 
 /** UTF-8 bytes → JSON → validated memo, or null if it isn't one of ours. */
-export function decodeMemoData(data: Hex | undefined | null): PayslipMemo | null {
+export function decodeMemoData(data: Hex | undefined | null): KredMemo | null {
   if (!data || data === "0x") return null;
   try {
     const json = JSON.parse(hexToString(data));
@@ -71,7 +71,7 @@ export function decodeMemoData(data: Hex | undefined | null): PayslipMemo | null
     ) {
       return null;
     }
-    const res = payslipMemoSchema.safeParse(json);
+    const res = kredMemoSchema.safeParse(json);
     return res.success ? res.data : null;
   } catch {
     return null;
@@ -82,7 +82,7 @@ export function decodeMemoData(data: Hex | undefined | null): PayslipMemo | null
  * App convention for the on-chain `memoId` (bytes32): keccak256("<period>:<invoice>").
  * Lets a verifier group/filter memos by invoice without reading the full blob.
  */
-export function computeMemoId(memo: PayslipMemo): Hex {
+export function computeMemoId(memo: KredMemo): Hex {
   return keccak256(stringToHex(`${memo.period ?? ""}:${memo.invoice ?? ""}`));
 }
 
@@ -95,7 +95,7 @@ export interface PayWithMemoParams {
   to: Address;
   /** Amount in base units (bigint). */
   amount: bigint;
-  memo: PayslipMemo;
+  memo: KredMemo;
 }
 
 /**
@@ -126,10 +126,10 @@ export function buildPayWithMemo(params: PayWithMemoParams) {
 
 const MEMO_ADDR_LC = MEMO_ADDRESS.toLowerCase();
 
-/** Decode the first Payslip Memo event among a tx receipt's logs, if present. */
+/** Decode the first Kred Memo event among a tx receipt's logs, if present. */
 export function parseMemoFromLogs(
   logs: readonly { address: string; topics: readonly Hex[]; data: Hex }[],
-): { memo: PayslipMemo | null; memoId: Hex } | null {
+): { memo: KredMemo | null; memoId: Hex } | null {
   for (const log of logs) {
     if (log.address.toLowerCase() !== MEMO_ADDR_LC) continue;
     try {

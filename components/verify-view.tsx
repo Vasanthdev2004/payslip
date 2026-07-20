@@ -157,7 +157,7 @@ export function VerifyView({
 
       <p className="mt-6 text-center text-xs text-muted-foreground">
         Every figure links to a transaction you can inspect yourself on{" "}
-        <span className="text-foreground">Arc</span>. Payslip stores no amounts.
+        <span className="text-foreground">Arc</span>. Kred stores no amounts.
       </p>
 
       <div className="mt-10 rounded-xl border border-dashed border-border p-5 text-center">

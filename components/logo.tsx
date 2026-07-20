@@ -12,21 +12,16 @@ export function Logo({ className }: { className?: string }) {
         className="shrink-0"
       >
         <rect width="32" height="32" rx="9" fill="hsl(var(--primary))" />
+        {/* K */}
         <path
-          d="M9 22V10.5A1.5 1.5 0 0 1 10.5 9H19a4.5 4.5 0 0 1 0 9h-6"
+          d="M11.5 8.5V23.5M20.5 8.5 12.5 16.2M12.5 15.8 20.5 23.5"
           stroke="hsl(var(--primary-foreground))"
-          strokeWidth="2.4"
+          strokeWidth="2.6"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          d="M13 6.5v19"
-          stroke="hsl(var(--primary-foreground))"
-          strokeWidth="2.4"
-          strokeLinecap="round"
-        />
       </svg>
-      <span className="tracking-tight">Payslip</span>
+      <span className="tracking-tight">Kred</span>
     </span>
   );
 }

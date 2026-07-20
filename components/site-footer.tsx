@@ -35,12 +35,12 @@ const COLUMNS: {
     links: [
       {
         label: "GitHub",
-        href: "https://github.com/Vasanthdev2004/payslip",
+        href: "https://github.com/Vasanthdev2004/kred",
         external: true,
       },
       {
         label: "How it's built",
-        href: "https://github.com/Vasanthdev2004/payslip/blob/main/docs/arc-notes.md",
+        href: "https://github.com/Vasanthdev2004/kred/blob/main/docs/arc-notes.md",
         external: true,
       },
     ],
@@ -71,7 +71,7 @@ export function SiteFooter() {
             by an Arc transaction — never our word.
           </p>
           <a
-            href="https://github.com/Vasanthdev2004/payslip"
+            href="https://github.com/Vasanthdev2004/kred"
             target="_blank"
             rel="noreferrer"
             className="mt-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -116,7 +116,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-border/60">
         <div className="container flex flex-wrap items-center justify-between gap-2 py-5 text-xs text-muted-foreground">
-          <span>© 2026 Payslip · MIT licensed · built on Arc testnet</span>
+          <span>© 2026 Kred · MIT licensed · built on Arc testnet</span>
           <span className="inline-flex items-center gap-1.5">
             <span className="relative flex size-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-3 opacity-60" />

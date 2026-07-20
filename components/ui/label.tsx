@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-// Payslip form-label look: small, muted, spaced above its control.
+// Kred form-label look: small, muted, spaced above its control.
 const labelVariants = cva(
   "mb-1.5 block text-xs font-medium leading-none text-muted-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 )

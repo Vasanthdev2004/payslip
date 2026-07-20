@@ -13,7 +13,7 @@ import {
 import { useIncome } from "@/hooks/use-income";
 import { useTags, type TagRecord } from "@/hooks/use-tags";
 import { type Payment } from "@/lib/indexer";
-import { type PayslipMemo } from "@/lib/memo";
+import { type KredMemo } from "@/lib/memo";
 import { type TokenSymbol } from "@/lib/tokens";
 import { ARC, explorerAddress, explorerTx } from "@/config/arc";
 import { cn, formatAmount, shorten, smartDate } from "@/lib/utils";
@@ -25,12 +25,12 @@ import { TagDialog, type TagDraft } from "@/components/tag-dialog";
 
 type MemoSource = "chain" | "tag" | "none";
 type Row = Payment & {
-  displayMemo: PayslipMemo | null;
+  displayMemo: KredMemo | null;
   memoSource: MemoSource;
   tag?: TagRecord;
 };
 
-function tagToMemo(t: TagRecord): PayslipMemo {
+function tagToMemo(t: TagRecord): KredMemo {
   return {
     client: t.client ?? undefined,
     project: t.project ?? undefined,

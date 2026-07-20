@@ -1,5 +1,5 @@
 {
-  "name": "payslip",
+  "name": "kred",
   "version": "0.1.0",
   "private": true,
   "description": "Verifiable proof-of-income for onchain freelancers, built on Arc with Transaction Memos.",

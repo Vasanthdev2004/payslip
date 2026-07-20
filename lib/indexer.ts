@@ -10,7 +10,7 @@
 import { getAddress, type Address, type Hex, type PublicClient } from "viem";
 import { ARC } from "@/config/arc";
 import { tokenByAddress, type TokenMeta } from "@/lib/tokens";
-import { parseMemoFromLogs, type PayslipMemo } from "@/lib/memo";
+import { parseMemoFromLogs, type KredMemo } from "@/lib/memo";
 
 export interface Payment {
   txHash: Hex;
@@ -23,7 +23,7 @@ export interface Payment {
   tokenDecimals: number;
   fiat: TokenMeta["fiat"];
   amount: bigint; // base units
-  memo: PayslipMemo | null;
+  memo: KredMemo | null;
   memoId: Hex | null;
 }
 

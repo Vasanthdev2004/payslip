@@ -243,7 +243,7 @@ function Outcome() {
       <div className="mt-5 space-y-2.5">
         {[
           "No approve needed — the payer signs a single transaction.",
-          "Payslip reads both events back and files it under Acme Inc, automatically.",
+          "Kred reads both events back and files it under Acme Inc, automatically.",
         ].map((t) => (
           <motion.div
             key={t}

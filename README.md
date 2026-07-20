@@ -1,9 +1,9 @@
-# Payslip
+# Kred
 
 **Verifiable proof-of-income for onchain freelancers — built on [Arc](https://www.arc.io/), Circle's stablecoin-native L1, powered by Arc Transaction Memos.**
 
 Freelancers paid in USDC/EURC have no payslip — nothing a bank, landlord, or visa
-officer will accept. Payslip turns your Arc payment history into a **verifiable,
+officer will accept. Kred turns your Arc payment history into a **verifiable,
 selectively-shareable proof of income**: a statement where every line is backed by an
 on-chain tx hash, and a public verify link a third party can confirm against Arc
 **without trusting your word**.
@@ -17,7 +17,7 @@ An Arc payment settles instantly but arrives as a bare transfer. Arc's **Memo co
 lets a payer attach structured context (invoice, project, period) to a payment — and,
 because it routes through the `CALL_FROM` precompile, the payment still emits a normal
 ERC-20 `Transfer` from the **real payer** plus a `Memo` event in the **same transaction**.
-Payslip reads both (F1) and writes them (F3). See [`docs/arc-notes.md`](docs/arc-notes.md).
+Kred reads both (F1) and writes them (F3). See [`docs/arc-notes.md`](docs/arc-notes.md).
 
 ## Features
 

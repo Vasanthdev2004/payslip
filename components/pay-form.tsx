@@ -80,7 +80,7 @@ export function PayForm({ request }: { request: PaymentRequest }) {
         <h2 className="mt-4 text-xl font-semibold">Payment sent</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           {request.amount} {request.token} paid to {shorten(request.to)} with its memo
-          attached. It now appears in their Payslip, already categorized.
+          attached. It now appears in their Kred, already categorized.
         </p>
         <a
           href={explorerTx(hash)}

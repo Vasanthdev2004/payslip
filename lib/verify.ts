@@ -15,7 +15,7 @@ import {
 import { ARC } from "@/config/arc";
 import { ERC20_ABI } from "@/lib/abi";
 import { tokenBySymbol, type Fiat, type TokenSymbol } from "@/lib/tokens";
-import { parseMemoFromLogs, type PayslipMemo } from "@/lib/memo";
+import { parseMemoFromLogs, type KredMemo } from "@/lib/memo";
 
 // USDC is Arc's native coin — its Transfer events come from this system address in
 // 18 decimals; EURC is a normal ERC-20 (6 decimals). See docs/arc-notes.md.
@@ -33,7 +33,7 @@ export interface VerifiedTx {
   amount: bigint;
   from: Address;
   timestamp: number; // ms epoch (0 if unknown)
-  memo: PayslipMemo | null;
+  memo: KredMemo | null;
 }
 
 export interface RecomputeTotal {

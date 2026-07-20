@@ -8,7 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: "Payslip — Verifiable proof-of-income on Arc",
+  title: "Kred — Verifiable proof-of-income on Arc",
   description:
     "Turn your on-chain stablecoin payment history on Arc into verifiable, selectively-shareable proof of income — powered by Arc Transaction Memos.",
 };

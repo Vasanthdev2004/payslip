@@ -19,7 +19,7 @@ export function NetworkGuard() {
         <div className="flex items-center gap-2 text-destructive">
           <AlertTriangle className="size-4" />
           <span>
-            Wrong network. Payslip reads income from{" "}
+            Wrong network. Kred reads income from{" "}
             <strong>Arc Testnet</strong>.
           </span>
         </div>

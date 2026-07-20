@@ -11,7 +11,7 @@ import { VerifyView } from "@/components/verify-view";
 export const revalidate = 30;
 
 export const metadata: Metadata = {
-  title: "Verified income · Payslip",
+  title: "Verified income · Kred",
   description: "Income proof recomputed live from Arc on-chain data.",
 };
 
