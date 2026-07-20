@@ -3,7 +3,6 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  CheckCircle2,
   FileText,
   Github,
   Link2,
@@ -13,6 +12,7 @@ import {
 import { FluidBackground } from "./fluid-background";
 import { WordReveal } from "./word-reveal";
 import { PassportCard } from "./passport-card";
+import { MemoAnatomy } from "./memo-anatomy";
 import { Reveal } from "./reveal";
 import { WalletButton } from "./wallet-button";
 import { Logo } from "./logo";
@@ -168,92 +168,7 @@ export function LandingHero() {
       </section>
 
       {/* --------------------------------------------- memo anatomy (Arc-native) */}
-      <section className="relative px-5 py-24">
-        <div className="pointer-events-none absolute inset-x-0 top-1/3 -z-10 h-72 bg-brand/[0.05] blur-3xl" />
-        <div className="mx-auto max-w-5xl">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-medium text-brand-3">
-              The Arc-native part
-            </p>
-            <h2 className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">
-              The memo travels <span className="text-gradient">with the money</span>
-            </h2>
-            <p className="mt-4 text-white/55">
-              Arc&apos;s Memo contract wraps the transfer and emits structured context
-              in the same transaction — invoice, project, period. Not a note in our
-              database. On-chain, forever, verifiable by anyone.
-            </p>
-          </Reveal>
-
-          <Reveal delay={140} className="mx-auto mt-12 max-w-3xl">
-            <div className="gradient-border overflow-hidden rounded-xl bg-[#0a0f14] shadow-glow">
-              {/* terminal chrome */}
-              <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
-                <span className="size-2.5 rounded-full bg-[#ff5f57]" />
-                <span className="size-2.5 rounded-full bg-[#febc2e]" />
-                <span className="size-2.5 rounded-full bg-[#28c840]" />
-                <span className="ml-3 font-mono text-xs text-white/40">
-                  payslip — pay with memo
-                </span>
-                <span className="ml-auto rounded-full border border-brand/30 bg-brand/10 px-2 py-0.5 font-mono text-[10px] text-brand-3">
-                  Arc Testnet
-                </span>
-              </div>
-              {/* the call */}
-              <div className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed">
-                <div className="text-white/40">
-                  # client opens your request link and pays
-                </div>
-                <div className="mt-2">
-                  <span className="text-brand-3">Memo.memo</span>
-                  <span className="text-white/60">(</span>
-                </div>
-                <div className="pl-5">
-                  <span className="text-white/50">target:</span>{" "}
-                  <span className="text-white">USDC</span>{" "}
-                  <span className="text-white/30">· 0x3600…0000</span>
-                </div>
-                <div className="pl-5">
-                  <span className="text-white/50">data:</span>{" "}
-                  <span className="text-white">transfer(you, 1,250.00)</span>
-                </div>
-                <div className="pl-5">
-                  <span className="text-white/50">memoId:</span>{" "}
-                  <span className="text-white/70">
-                    keccak256(&quot;2026-03:INV-2026-014&quot;)
-                  </span>
-                </div>
-                <div className="pl-5">
-                  <span className="text-white/50">memo:</span>{" "}
-                  <span className="text-white/60">{"{"}</span>
-                </div>
-                {[
-                  ["client", "Acme Inc"],
-                  ["project", "Website redesign"],
-                  ["invoice", "INV-2026-014"],
-                  ["period", "2026-03"],
-                ].map(([k, v]) => (
-                  <div key={k} className="pl-10">
-                    <span className="text-brand-3">&quot;{k}&quot;</span>
-                    <span className="text-white/40">: </span>
-                    <span className="text-emerald-50/90">&quot;{v}&quot;</span>
-                  </div>
-                ))}
-                <div className="pl-5 text-white/60">{"}"}</div>
-                <div className="text-white/60">)</div>
-                <div className="mt-4 flex items-center gap-2 text-brand-3">
-                  <CheckCircle2 className="size-4" />
-                  <span>settled in &lt;1s · payer preserved via CALL_FROM</span>
-                </div>
-                <div className="mt-1 flex items-center gap-2 text-brand-3">
-                  <CheckCircle2 className="size-4" />
-                  <span>lands in your Payslip already categorized</span>
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <MemoAnatomy />
 
       {/* ---------------------------------------------------------- trust band */}
       <section className="relative border-y border-white/[0.06] bg-white/[0.02] px-5 py-14">
