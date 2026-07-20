@@ -62,6 +62,16 @@ export function decodeMemoData(data: Hex | undefined | null): PayslipMemo | null
   if (!data || data === "0x") return null;
   try {
     const json = JSON.parse(hexToString(data));
+    // Discriminator: only accept our own schema version. Foreign dApp memos on the
+    // shared Arc Memo contract (or a future incompatible version) → null, not {v:1}.
+    if (
+      typeof json !== "object" ||
+      json === null ||
+      Array.isArray(json) ||
+      json.v !== MEMO_SCHEMA_VERSION
+    ) {
+      return null;
+    }
     const res = payslipMemoSchema.safeParse(json);
     return res.success ? res.data : null;
   } catch {

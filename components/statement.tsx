@@ -19,7 +19,8 @@ const ym = (ts: number) => new Date(ts).toISOString().slice(0, 7);
 
 export function Statement() {
   const { address, isConnected } = useAccount();
-  const { data: payments, isLoading } = useIncome();
+  const { data, isLoading } = useIncome();
+  const payments = data?.payments;
   const { data: tags } = useTags();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");

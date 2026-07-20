@@ -125,7 +125,9 @@ function StatementDoc({
             <View style={{ flex: 5 }}>
               <View style={{ flexDirection: "row" }}>
                 <Text style={{ flex: 2 }}>
-                  {new Date(t.timestamp).toLocaleDateString("en-US")}
+                  {new Date(t.timestamp).toLocaleDateString("en-US", {
+                    timeZone: "UTC",
+                  })}
                 </Text>
                 <Text style={{ flex: 3 }}>{t.client ?? "—"}</Text>
               </View>

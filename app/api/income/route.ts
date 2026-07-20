@@ -13,8 +13,11 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const payments = await fetchIncome(serverClient(), getAddress(raw));
-    return NextResponse.json({ payments: payments.map(toDTO) });
+    const { payments, truncated } = await fetchIncome(
+      serverClient(),
+      getAddress(raw),
+    );
+    return NextResponse.json({ payments: payments.map(toDTO), truncated });
   } catch (err) {
     console.error("income index failed", err);
     return NextResponse.json(

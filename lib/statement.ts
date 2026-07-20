@@ -136,8 +136,12 @@ export function buildStatement(
     });
   }
 
+  // Rank per-currency (no FX): USDC desc, then EURC desc, then count — never sum
+  // two different fiats as one key.
   const rank = (m: Map<string, BreakdownRow>) =>
-    [...m.values()].sort((a, b) => b.USDC + b.EURC - (a.USDC + a.EURC));
+    [...m.values()].sort(
+      (a, b) => b.USDC - a.USDC || b.EURC - a.EURC || b.count - a.count,
+    );
 
   txs.sort((a, b) => b.timestamp - a.timestamp);
 

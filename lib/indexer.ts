@@ -57,9 +57,13 @@ interface TokenTx {
 const MAX_PAGES = 6;
 const PAGE_SIZE = 1000;
 
-/** Pull the address's ERC-20 transfers from the explorer, newest first. */
-async function fetchTokenTx(address: Address): Promise<TokenTx[]> {
+/** Pull the address's ERC-20 transfers from the explorer, newest first.
+ *  `truncated` is true if we hit the page cap with more history still available. */
+async function fetchTokenTx(
+  address: Address,
+): Promise<{ txs: TokenTx[]; truncated: boolean }> {
   const out: TokenTx[] = [];
+  let truncated = false;
   for (let page = 1; page <= MAX_PAGES; page++) {
     const url =
       `${ARC.explorerUrl}/api?module=account&action=tokentx` +
@@ -70,8 +74,9 @@ async function fetchTokenTx(address: Address): Promise<TokenTx[]> {
     const rows = Array.isArray(json.result) ? json.result : [];
     out.push(...rows);
     if (rows.length < PAGE_SIZE) break;
+    if (page === MAX_PAGES) truncated = true; // full last page → more remains
   }
-  return out;
+  return { txs: out, truncated };
 }
 
 /** Keep only incoming USDC/EURC transfers to `address`, as Payment rows (no memo yet). */
@@ -146,7 +151,7 @@ function memoFromLogs(
 export async function enrichMemos(
   client: PublicClient,
   payments: Payment[],
-  cap = 150,
+  cap = 250,
 ): Promise<Payment[]> {
   const targets = payments.slice(0, cap);
   await mapLimit(targets, 8, async (p) => {
@@ -168,10 +173,10 @@ export async function enrichMemos(
 export async function fetchIncome(
   client: PublicClient,
   address: Address,
-): Promise<Payment[]> {
-  const txs = await fetchTokenTx(address);
+): Promise<{ payments: Payment[]; truncated: boolean }> {
+  const { txs, truncated } = await fetchTokenTx(address);
   const payments = toIncomingPayments(txs, address);
   await enrichMemos(client, payments);
   payments.sort((a, b) => b.blockNumber - a.blockNumber);
-  return payments;
+  return { payments, truncated };
 }

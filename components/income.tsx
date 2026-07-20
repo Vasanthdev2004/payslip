@@ -67,7 +67,9 @@ function summarize(rows: Row[]) {
 }
 
 export function IncomeSection() {
-  const { data: payments, isLoading, isError, isFetching, refetch } = useIncome();
+  const { data, isLoading, isError, isFetching, refetch } = useIncome();
+  const payments = data?.payments;
+  const truncated = data?.truncated;
   const { data: tags } = useTags();
   const [dialog, setDialog] = useState<{ txHash: string; initial?: TagDraft } | null>(
     null,
@@ -126,6 +128,12 @@ export function IncomeSection() {
         <IncomeEmpty />
       ) : (
         <>
+          {truncated && (
+            <div className="rounded-lg border border-border bg-secondary/40 px-4 py-2.5 text-xs text-muted-foreground">
+              Showing your most recent {rows.length.toLocaleString()} payments — older
+              history is truncated and not counted in these totals.
+            </div>
+          )}
           <IncomeSummary rows={rows} />
           <IncomeTable rows={rows} onTag={openTag} />
         </>

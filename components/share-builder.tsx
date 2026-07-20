@@ -23,7 +23,8 @@ const FIELD_OPTIONS = [
 
 export function ShareBuilder() {
   const { address, isConnected } = useAccount();
-  const { data: payments, isLoading } = useIncome();
+  const { data, isLoading } = useIncome();
+  const payments = data?.payments;
 
   const months = useMemo(() => {
     const set = new Set((payments ?? []).map((p) => ym(p.timestamp)));
