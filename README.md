@@ -1,59 +1,79 @@
+<div align="center">
+
+<img src="docs/media/banner.png" alt="Kred — verifiable proof-of-income on Arc" width="100%" />
+
 # Kred
 
-**Verifiable proof-of-income for onchain freelancers — built on [Arc](https://www.arc.io/), Circle's stablecoin-native L1, powered by Arc Transaction Memos.**
+**Your on-chain income, turned into proof a bank will accept.**
 
-**Live: [kred.today](https://kred.today)**
+[**kred.today**](https://kred.today) · built on [Arc](https://www.arc.io/), Circle's stablecoin L1 · powered by Arc Transaction Memos
 
-Freelancers paid in USDC/EURC have no payslip — nothing a bank, landlord, or visa
-officer will accept. Kred turns your Arc payment history into a **verifiable,
-selectively-shareable proof of income**: a statement where every line is backed by an
-on-chain tx hash, and a public verify link a third party can confirm against Arc
-**without trusting your word**.
+</div>
 
-> The chain is always the source of truth for amounts. Our database stores only tags
-> and disclosure preferences — never the numbers.
+---
 
-## Why Arc Transaction Memos
+## The problem
 
-An Arc payment settles instantly but arrives as a bare transfer. Arc's **Memo contract**
-lets a payer attach structured context (invoice, project, period) to a payment — and,
-because it routes through the `CALL_FROM` precompile, the payment still emits a normal
-ERC-20 `Transfer` from the **real payer** plus a `Memo` event in the **same transaction**.
-Kred reads both (F1) and writes them (F3). See [`docs/arc-notes.md`](docs/arc-notes.md).
+You get paid in USDC. Your rent application asks for a payslip.
 
-## Features
+Millions of freelancers, contractors, and remote workers earn real, steady income in
+stablecoins — and have **nothing** a bank, landlord, or visa officer will accept as
+proof. Screenshots can be faked. Spreadsheets are just your word. Payroll providers
+don't know you exist.
 
-| | Feature | Status |
-|---|---|---|
-| F1 | Connect + index incoming USDC/EURC on Arc | ✅ |
-| F2 | Decode memos + manual tagging | ✅ |
-| F3 | **Pay-with-memo** request/payer flow (the showcase) | ✅ |
-| F4 | Income statement + charts + branded PDF | ✅ |
-| F5 | Public verify page + selective disclosure (trustless recompute) | ✅ |
-| F6 | **KredRegistry** — on-chain tamper-evident anchor for disclosures | ✅ built (activates when the contract address is set) |
-| F7 | Polished, responsive, dark/light UI (WebGL fluid hero, glass design system) | ✅ |
+Meanwhile every payment you've ever received is already sitting on a public ledger,
+mathematically verifiable by anyone. Kred is the bridge between those two facts.
 
-All correctness-critical paths went through adversarial multi-agent review passes
-before this status was claimed — see [`PROGRESS.md`](PROGRESS.md).
+## What you can do with Kred
 
-## How the trust model works
+**📥 Get an income passport, automatically.**
+Connect your wallet and Kred indexes every incoming USDC/EURC payment on Arc — amounts,
+dates, payers. Payments sent through Arc's Memo contract arrive **already labeled** with
+client, project, and invoice. Everything else you can tag yourself.
 
-1. **Income** is read from Arc (explorer index + RPC receipts) — never entered by hand.
-2. **A disclosure** stores only *which* tx hashes + *which* fields to reveal.
-3. **The verify page recomputes** every amount live from Arc receipts. Tampering with
-   the database cannot change a verified number — the DB never held it.
-4. **(F6, optional)** The owner can anchor a keccak256 digest of the disclosure in the
-   `KredRegistry` contract from their own wallet. The verify page recomputes the digest
-   and reads `anchoredAt(owner, digest)` **from the contract** — so "Anchored on-chain ·
-   date" can't be faked either. No amounts or PII ever go on-chain.
+**🔗 Get paid with context.**
+Send a client a payment link with the invoice details baked in. When they pay, the memo
+travels *on-chain in the same transaction* as the money — so the payment lands in your
+history pre-categorized. No client account needed.
 
-## Stack
+**📄 Generate a real income statement.**
+Pick a period → totals by client and category, a monthly trend chart, and a branded PDF
+where **every line item carries its transaction hash**. Not "trust me" — "check it."
 
-Next.js 14 (App Router) · TypeScript · Tailwind · shadcn/Radix · wagmi + viem ·
-RainbowKit · Recharts · @react-pdf/renderer · Prisma + PostgreSQL · Solidity
-(`contracts/KredRegistry.sol`) · deployed on Railway.
+**🛡️ Share proof, not spreadsheets.**
+Create a verify link and choose exactly what it reveals — period, payment count,
+clients, wallet — and what stays private. Whoever opens it sees your income
+**recomputed live from the blockchain**, not from our database.
 
-## Getting started
+**⚓ Anchor it on-chain.**
+Optionally stamp a tamper-evident fingerprint of your proof into the `KredRegistry`
+contract from your own wallet. The verify page shows *when* it was anchored — read
+straight from the contract, impossible to backdate or fake.
+
+## Why a bank can actually trust this
+
+Most "proof" tools show you a number they stored. Kred never stores a number.
+
+1. The database holds only **which transactions** you disclosed and **which fields**
+   to show. No amounts, ever.
+2. When someone opens your verify link, the server **re-derives every amount from Arc
+   transaction receipts, live** — hacking our database changes nothing.
+3. The optional on-chain anchor is read back from the contract keyed by *your* wallet,
+   so even the "anchored on" timestamp can't be forged.
+
+If Kred disappeared tomorrow, every number it ever showed would still be independently
+checkable on [Arcscan](https://testnet.arcscan.app).
+
+## The Arc-native part
+
+Arc's **Memo contract** wraps a token transfer and emits structured context in the same
+transaction, while the `CALL_FROM` precompile keeps the real payer as the sender. One
+tx = money **and** meaning. Kred both writes memos (payment requests) and reads them
+(auto-categorized income) — plus handles Arc's quirk where **USDC is the native gas
+coin** (its transfers emit from `0xff…fe` at 18 decimals, normalized to the 6-decimal
+ERC-20 view). Every verified Arc fact lives in [`docs/arc-notes.md`](docs/arc-notes.md).
+
+## Run it yourself
 
 ```bash
 npm install
@@ -63,58 +83,53 @@ npx prisma migrate deploy
 npm run dev                    # http://localhost:3000
 ```
 
-Connect a wallet, switch to **Arc Testnet** when prompted, and fund it from the
+Switch your wallet to **Arc Testnet** when prompted and fund it from the
 [Circle faucet](https://faucet.circle.com).
 
-### Environment variables
+<details>
+<summary><b>Configuration & contract deployment</b></summary>
 
 | Variable | Required | Purpose |
 |---|---|---|
 | `DATABASE_URL` | yes | Postgres for tags + disclosure prefs (never amounts) |
-| `NEXT_PUBLIC_WC_PROJECT_ID` | no | WalletConnect project id — without it only injected wallets (e.g. MetaMask extension) connect; set it to enable mobile/WalletConnect wallets |
-| `NEXT_PUBLIC_APP_URL` | no | Absolute origin for OG/share metadata (defaults to `https://kred.today`) |
-| `NEXT_PUBLIC_KRED_REGISTRY_ADDRESS` | no | Deployed `KredRegistry` address — the anchor button + badge stay dormant until set |
+| `NEXT_PUBLIC_WC_PROJECT_ID` | no | WalletConnect id — without it only injected wallets (MetaMask) connect |
+| `NEXT_PUBLIC_APP_URL` | no | Absolute origin for share metadata (defaults to `https://kred.today`) |
+| `NEXT_PUBLIC_KRED_REGISTRY_ADDRESS` | no | Deployed `KredRegistry` — anchor UI stays dormant until set |
 | `DEPLOYER_PRIVATE_KEY` | no | Only for `npm run deploy:registry`; never committed |
 
-### Deploying the KredRegistry contract (F6)
+**Deploy the anchor contract:** fund a wallet at the faucet, put its key in `.env` as
+`DEPLOYER_PRIVATE_KEY`, then `npm run deploy:registry` — it compiles
+[`contracts/KredRegistry.sol`](contracts/KredRegistry.sol) with solc, deploys via viem,
+and prints the address to set as `NEXT_PUBLIC_KRED_REGISTRY_ADDRESS`.
 
-```bash
-# fund a wallet at https://faucet.circle.com, put its key in .env as DEPLOYER_PRIVATE_KEY
-npm run deploy:registry        # compiles with solc + deploys via viem, prints the address
-# then set NEXT_PUBLIC_KRED_REGISTRY_ADDRESS to that address (locally + in prod) and redeploy
-```
+**Arc testnet:** chain id `5042002` · RPC `rpc.testnet.arc.network` · explorer
+`testnet.arcscan.app` · USDC `0x3600…0000` · EURC `0x89B5…D72a` · Memo `0x5294…E505` ·
+Multicall3 `0xcA11…CA11` (client reads are batched — the public RPC rate-limits).
 
-### Arc testnet at a glance
+</details>
 
-| | |
-|---|---|
-| Chain ID | `5042002` |
-| RPC | `https://rpc.testnet.arc.network` |
-| Explorer | `https://testnet.arcscan.app` |
-| USDC (ERC-20) | `0x3600…0000` (6 dp; **native** USDC events are emitted by `0xff…fe` in 18 dp) |
-| EURC | `0x89B5…D72a` (6 dp) |
-| Memo contract | `0x5294…E505` |
-| Multicall3 | `0xcA11…CA11` (client reads are batched — the public RPC rate-limits rapid separate calls) |
+<details>
+<summary><b>Honest limitations (testnet MVP)</b></summary>
 
-Full, verified reference: [`docs/arc-notes.md`](docs/arc-notes.md). Progress log:
-[`PROGRESS.md`](PROGRESS.md).
+- **Arc testnet only** — test USDC/EURC. A production launch means Arc mainnet, a
+  dedicated RPC, and a security review.
+- Tags API trusts the address param (no Sign-In-with-Ethereum yet) — tags are
+  cosmetic metadata; the chain-derived income/verify numbers need no auth by design.
+- Verify links aren't globally rate-limited (bounded per link: ≤500 txs + caching).
+- History indexes the most recent ~6,000 transfers (memo enrichment: ~250), and the
+  UI says so instead of silently truncating.
 
-## Known limitations (testnet MVP)
+</details>
 
-Surfaced by adversarial review passes; the correctness bugs are fixed, these are the
-deliberate scope calls:
+## Stack
 
-- **Arc testnet only** — test USDC/EURC, not real funds. A production launch means Arc
-  mainnet, a dedicated RPC endpoint, and a security review.
-- **No wallet authentication on the tags API.** Tags (private categorization metadata)
-  trust the `address` param (IDOR); the proper fix is Sign-In-with-Ethereum. The
-  **chain-derived data (income, verify) needs no auth** — it's public + recomputed.
-  The anchor-tx PATCH, by contrast, *is* verified on-chain before being stored.
-- **Verify links are unauthenticated + not globally rate-limited.** Amplification is
-  bounded per link (≤500 disclosed txs + short ISR caching on `/verify`).
-- **History indexes the most recent ~6,000 transfers** (memo enrichment: most recent
-  ~250). Truncation is surfaced in the UI rather than silently dropped.
+Next.js 14 · TypeScript · Tailwind + shadcn/Radix · wagmi/viem + RainbowKit ·
+Recharts · @react-pdf/renderer · Prisma + Postgres · Solidity · Railway
 
-## License
+---
 
-MIT.
+<div align="center">
+
+**[Open Kred →](https://kred.today)** — connect a wallet, or just open someone's verify link and check the math yourself.
+
+</div>
