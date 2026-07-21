@@ -178,8 +178,8 @@ export function ShareBuilder() {
           ))}
         </div>
         <p className="mt-3 text-xs text-muted-foreground">
-          The total and the backing transactions are always shown — that&apos;s what
-          makes the proof independently verifiable.
+          The total and the backing transactions are always shown, and that&apos;s
+          what makes the proof independently verifiable.
         </p>
       </GlassCard>
 
@@ -260,7 +260,7 @@ function ShareResult({
       </div>
       <h2 className="mt-4 text-xl font-semibold">Your verify link is ready</h2>
       <p className="mt-2 text-sm text-muted-foreground">
-        Anyone who opens it sees your income recomputed live from Arc — no trust in
+        Anyone who opens it sees your income recomputed live from Arc. No trust in
         you required.
       </p>
       <div className="mt-5 flex gap-2">

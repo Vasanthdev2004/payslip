@@ -74,7 +74,7 @@ export function RequestBuilder() {
     await navigator.clipboard.writeText(url);
     setCopied(true);
     toast.success("Payment link copied", {
-      description: "Send it to your client — the memo rides along.",
+      description: "Send it to your client, the memo rides along.",
     });
     setTimeout(() => setCopied(false), 1800);
   }

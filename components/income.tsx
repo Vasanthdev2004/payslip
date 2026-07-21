@@ -132,7 +132,7 @@ export function IncomeSection() {
         <>
           {truncated && (
             <div className="rounded-lg border border-border bg-secondary/40 px-4 py-2.5 text-xs text-muted-foreground">
-              Showing your most recent {rows.length.toLocaleString()} payments — older
+              Showing your most recent {rows.length.toLocaleString()} payments. Older
               history is truncated and not counted in these totals.
             </div>
           )}

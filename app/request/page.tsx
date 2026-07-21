@@ -14,7 +14,7 @@ export default function RequestPage() {
         icon={Send}
         eyebrow="Get paid"
         title="Request a payment"
-        description="Generate a link that attaches an invoice/project memo to the incoming payment — when your client pays, it lands in your Kred already categorized. No account needed on their side."
+        description="Generate a link that attaches an invoice/project memo to the incoming payment. When your client pays, it lands in your Kred already categorized. No account needed on their side."
       />
       <RequestBuilder />
     </div>

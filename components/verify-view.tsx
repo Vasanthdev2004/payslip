@@ -186,7 +186,7 @@ export function VerifyView({
       <div className="mt-10 rounded-xl border border-dashed border-border p-5 text-center">
         <p className="text-sm font-medium">Get paid in stablecoins too?</p>
         <p className="mt-1 text-xs text-muted-foreground">
-          Turn your own Arc payment history into proof like this — free, open
+          Turn your own Arc payment history into proof like this. Free, open
           source, nothing to install.
         </p>
         <Link

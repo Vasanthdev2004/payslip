@@ -14,7 +14,7 @@ export default function StatementPage() {
         icon={FileText}
         eyebrow="Report"
         title="Income statement"
-        description="Aggregate any period into totals by client and category, with a monthly trend — then export a branded PDF where every line is backed by an on-chain tx hash."
+        description="Aggregate any period into totals by client and category, with a monthly trend, then export a branded PDF where every line is backed by an on-chain tx hash."
       />
       <Statement />
     </div>

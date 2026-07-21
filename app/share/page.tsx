@@ -14,7 +14,7 @@ export default function SharePage() {
         icon={ShieldCheck}
         eyebrow="Prove it"
         title="Share a verify link"
-        description="Publish a link that proves your income for a period. The verifier's page recomputes every figure from Arc on-chain data — they never have to trust you, or us. You choose what extra detail to reveal."
+        description="Publish a link that proves your income for a period. The verifier's page recomputes every figure from Arc on-chain data. They never have to trust you, or us. You choose what extra detail to reveal."
       />
       <ShareBuilder />
     </div>
