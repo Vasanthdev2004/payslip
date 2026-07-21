@@ -26,7 +26,7 @@ const STEPS = [
   {
     icon: FileText,
     title: "Generate a statement",
-    body: "Aggregate any period into totals by client and category — then export a branded PDF where every figure cites its tx hash.",
+    body: "Aggregate any period into totals by client and category, then export a branded PDF where every figure cites its tx hash.",
   },
   {
     icon: Link2,
@@ -83,7 +83,7 @@ export function LandingHero() {
 
           <WordReveal
             as="h1"
-            text="Prove what you earned — onchain."
+            text="Prove what you earned onchain."
             className="mt-6 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-[4.5rem]"
             baseDelay={220}
             stagger={85}
@@ -120,7 +120,7 @@ export function LandingHero() {
             style={{ animationDelay: "1550ms" }}
           >
             <ShieldCheck className="size-3.5 text-brand-3" />
-            The chain is the source of truth — never our database.
+            The chain is the source of truth, never our database.
           </div>
         </div>
       </section>
@@ -135,7 +135,7 @@ export function LandingHero() {
             </h2>
             <p className="mt-4 max-w-md text-white/55">
               No product turns on-chain payment history into disclosable income
-              proof. Kred is that credential layer — Arc-native, and trustless
+              proof. Kred is that credential layer: Arc-native, and trustless
               by construction.
             </p>
 
@@ -161,7 +161,7 @@ export function LandingHero() {
             <div className="absolute -inset-8 -z-10 rounded-full bg-brand/20 blur-3xl" />
             <PassportCard />
             <p className="mt-4 text-center text-xs text-white/35">
-              Example proof — the real one is recomputed from your Arc history.
+              Example proof. The real one is recomputed from your Arc history.
             </p>
           </div>
         </div>
@@ -175,9 +175,9 @@ export function LandingHero() {
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 text-center lg:grid-cols-4">
           {[
             ["<1s", "deterministic finality on Arc"],
-            ["USDC", "gas token — no volatile fees"],
+            ["USDC", "gas token, no volatile fees"],
             ["2", "stablecoins indexed · USDC + EURC"],
-            ["0", "trust required — verifiers recompute"],
+            ["0", "trust required · verifiers recompute"],
           ].map(([big, small], i) => (
             <Reveal key={small} delay={i * 90}>
               <div className="font-mono text-3xl font-semibold text-white sm:text-4xl">
@@ -203,7 +203,7 @@ export function LandingHero() {
             evidence a bank can check.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <WalletButton label="Connect wallet — it's free" size="lg" glow />
+            <WalletButton label="Connect wallet, it's free" size="lg" glow />
             <a
               href="https://github.com/Vasanthdev2004/kred"
               target="_blank"

@@ -34,7 +34,7 @@ const D = ({ children }: { children: ReactNode }) => (
 type Line = { lvl?: number; hl?: boolean; node: ReactNode };
 
 const LINES: Line[] = [
-  { node: <C># your client signs once — the memo rides along</C> },
+  { node: <C># your client signs once, the memo rides along</C> },
   { node: (<><Fn>Memo.memo</Fn><P>(</P></>) },
   { lvl: 1, node: (<><K>target</K><P>:</P> <V>USDC</V> <D>· 0x3600…0000</D></>) },
   { lvl: 1, node: (<><K>data</K><P>:</P>{"   "}<V>transfer(</V><D>you</D><V>, 1,250.00)</V></>) },
@@ -242,7 +242,7 @@ function Outcome() {
 
       <div className="mt-5 space-y-2.5">
         {[
-          "No approve needed — the payer signs a single transaction.",
+          "No approve needed. The payer signs a single transaction.",
           "Kred reads both events back and files it under Acme Inc, automatically.",
         ].map((t) => (
           <motion.div
@@ -272,8 +272,8 @@ export function MemoAnatomy() {
           </h2>
           <p className="mt-4 text-white/55">
             Arc&apos;s Memo contract wraps the transfer and emits structured
-            context in the <span className="text-white/80">same transaction</span>{" "}
-            — not a note in our database. On-chain, forever, verifiable by anyone.
+            context in the <span className="text-white/80">same transaction</span>,{" "}
+            not a note in our database. On-chain, forever, verifiable by anyone.
           </p>
         </Reveal>
 
