@@ -56,7 +56,11 @@ Running log of milestones. Chain is the source of truth; DB is metadata only.
     postgresql; `migrate deploy` pre-deploy; local dev shares the same DB.
   - Verified live: all routes 200 + a real disclosure→verify recompute round-trip
     against Arc from the production server.
-  - Remaining: live wallet demo run, WC project id, demo recording, final polish.
+  - Since then: kred.today domain + OG/Twitter share cards; site-wide glass design
+    system + MonthPicker; real @web3icons coins + Jazzicon avatar; Multicall3 balance
+    fix; README launch pass (71 claims adversarially fact-checked).
+  - Remaining: WC project id (mobile wallets), KredRegistry activation (owner deploys
+    + sets NEXT_PUBLIC_KRED_REGISTRY_ADDRESS), live wallet demo run, demo recording.
 
 ## Adversarial review pass (pre-deploy)
 
