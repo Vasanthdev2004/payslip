@@ -16,7 +16,7 @@ import { tokenBySymbol } from "@/lib/tokens";
 import { ARC_TESTNET_ID, explorerTx } from "@/config/arc";
 import { shorten } from "@/lib/utils";
 import type { PaymentRequest } from "@/lib/request";
-import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TokenBadge } from "@/components/token-badge";
@@ -73,7 +73,7 @@ export function PayForm({ request }: { request: PaymentRequest }) {
 
   if (isSuccess && hash) {
     return (
-      <Card className="gradient-border hairline-top relative overflow-hidden p-8 text-center">
+      <GlassCard className="p-8 text-center">
         <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-accent">
           <CheckCircle2 className="size-7 text-primary" />
         </div>
@@ -91,12 +91,12 @@ export function PayForm({ request }: { request: PaymentRequest }) {
           View transaction on Arc
           <ExternalLink className="size-3.5" />
         </a>
-      </Card>
+      </GlassCard>
     );
   }
 
   return (
-    <Card className="gradient-border hairline-top relative overflow-hidden p-6">
+    <GlassCard className="p-6">
       <div className="pointer-events-none absolute -right-16 -top-20 size-56 rounded-full bg-brand/15 blur-3xl" />
 
       <div className="relative flex items-center justify-between">
@@ -186,6 +186,6 @@ export function PayForm({ request }: { request: PaymentRequest }) {
           </button>
         )}
       </div>
-    </Card>
+    </GlassCard>
   );
 }

@@ -11,6 +11,8 @@ import { type Payment } from "@/lib/indexer";
 import { formatAmount } from "@/lib/utils";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
+import { MonthPicker } from "@/components/ui/month-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -135,23 +137,15 @@ export function ShareBuilder() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
-      <Card className="p-6">
+      <GlassCard className="p-6">
         <div className="grid grid-cols-2 gap-3">
           <div>
             <Label>From</Label>
-            <Input
-              type="month"
-              value={rangeFrom}
-              onChange={(e) => setFrom(e.target.value)}
-            />
+            <MonthPicker value={rangeFrom} onChange={setFrom} />
           </div>
           <div>
             <Label>To</Label>
-            <Input
-              type="month"
-              value={rangeTo}
-              onChange={(e) => setTo(e.target.value)}
-            />
+            <MonthPicker value={rangeTo} onChange={setTo} />
           </div>
         </div>
 
@@ -187,14 +181,14 @@ export function ShareBuilder() {
           The total and the backing transactions are always shown — that&apos;s what
           makes the proof independently verifiable.
         </p>
-      </Card>
+      </GlassCard>
 
       {/* preview */}
       <div>
         <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           Will disclose
         </div>
-        <Card className="p-5">
+        <GlassCard className="p-5">
           {isLoading ? (
             <p className="text-sm text-muted-foreground">Loading income…</p>
           ) : included.length === 0 ? (
@@ -231,7 +225,7 @@ export function ShareBuilder() {
             {submitting ? "Creating…" : "Create verify link"}
           </Button>
           {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
-        </Card>
+        </GlassCard>
       </div>
     </div>
   );
@@ -260,7 +254,7 @@ function ShareResult({
     setTimeout(() => setCopied(false), 1800);
   }
   return (
-    <Card className="gradient-border hairline-top relative overflow-hidden p-8 text-center">
+    <GlassCard className="p-8 text-center">
       <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-accent">
         <ShieldCheck className="size-7 text-primary" />
       </div>
@@ -290,6 +284,6 @@ function ShareResult({
           Create another
         </button>
       </div>
-    </Card>
+    </GlassCard>
   );
 }

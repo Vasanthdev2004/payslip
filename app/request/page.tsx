@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/page-header";
 import { RequestBuilder } from "@/components/request-builder";
 
 export const metadata: Metadata = {
-  title: "Request a payment · Kred",
+  title: "Request a payment",
 };
 
 export default function RequestPage() {

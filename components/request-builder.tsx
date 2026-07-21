@@ -9,6 +9,8 @@ import { buildRequestPath } from "@/lib/request";
 import { TOKENS, type TokenSymbol } from "@/lib/tokens";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
+import { MonthPicker } from "@/components/ui/month-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -79,7 +81,7 @@ export function RequestBuilder() {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
-      <Card className="p-6">
+      <GlassCard className="p-6">
         <div className="grid grid-cols-[1fr_140px] gap-3">
           <div>
             <Label>Recipient (you)</Label>
@@ -148,7 +150,10 @@ export function RequestBuilder() {
           </div>
           <div>
             <Label>Period</Label>
-            <Input type="month" value={form.period} onChange={set("period")} />
+            <MonthPicker
+              value={form.period}
+              onChange={(v) => setForm((f) => ({ ...f, period: v }))}
+            />
           </div>
           <div>
             <Label>Category</Label>
@@ -208,7 +213,7 @@ export function RequestBuilder() {
             </a>
           )}
         </div>
-      </Card>
+      </GlassCard>
 
       {/* live preview of the payer's page */}
       <div>

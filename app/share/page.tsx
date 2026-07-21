@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/page-header";
 import { ShareBuilder } from "@/components/share-builder";
 
 export const metadata: Metadata = {
-  title: "Share a verify link · Kred",
+  title: "Share a verify link",
 };
 
 export default function SharePage() {

@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/page-header";
 import { Statement } from "@/components/statement";
 
 export const metadata: Metadata = {
-  title: "Income statement · Kred",
+  title: "Income statement",
 };
 
 export default function StatementPage() {

@@ -4,7 +4,7 @@ import type { RecomputeResult } from "@/lib/verify";
 import type { AnchorProof } from "@/lib/registry";
 import { explorerTx } from "@/config/arc";
 import { formatAmount, formatDate, shorten } from "@/lib/utils";
-import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { Logo } from "@/components/logo";
 import { TokenBadge } from "@/components/token-badge";
@@ -46,15 +46,15 @@ export function VerifyView({
       </div>
 
       {result.verifiedCount === 0 ? (
-        <Card className="p-8 text-center">
+        <GlassCard className="p-8 text-center">
           <TriangleAlert className="mx-auto size-7 text-destructive" />
           <h1 className="mt-4 text-xl font-semibold">Nothing to verify</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             None of the disclosed transactions resolved to incoming payments on Arc.
           </p>
-        </Card>
+        </GlassCard>
       ) : (
-        <Card className="gradient-border hairline-top relative overflow-hidden p-7">
+        <GlassCard className="p-7">
           <div className="pointer-events-none absolute -right-16 -top-24 size-56 rounded-full bg-brand/15 blur-3xl" />
 
           {/* seal */}
@@ -175,7 +175,7 @@ export function VerifyView({
                 ` ${result.failedCount} disclosed tx omitted (unverifiable).`}
             </span>
           </div>
-        </Card>
+        </GlassCard>
       )}
 
       <p className="mt-6 text-center text-xs text-muted-foreground">

@@ -7,7 +7,7 @@ import { ArrowRight, ExternalLink, FileText, Link2, Send } from "lucide-react";
 import { shorten } from "@/lib/utils";
 import { explorerAddress } from "@/config/arc";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
 import { WalletAvatar } from "@/components/wallet-avatar";
 import { CopyButton } from "@/components/copy-button";
 import { NetworkGuard } from "@/components/network-guard";
@@ -94,7 +94,7 @@ export function Dashboard() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {ACTIONS.map((a) => (
               <Link key={a.title} href={a.href} className="block">
-                <Card className="gradient-border hairline-top group relative h-full overflow-hidden p-6 transition-colors hover:bg-secondary/30">
+                <GlassCard interactive className="h-full p-6">
                   <div className="pointer-events-none absolute -right-10 -top-16 size-44 rounded-full bg-brand/10 blur-3xl" />
                   <span className="relative flex size-11 items-center justify-center rounded-lg bg-accent text-primary">
                     <a.icon className="size-5" />
@@ -106,7 +106,7 @@ export function Dashboard() {
                   <p className="relative mt-1.5 text-sm text-muted-foreground">
                     {a.body}
                   </p>
-                </Card>
+                </GlassCard>
               </Link>
             ))}
           </div>

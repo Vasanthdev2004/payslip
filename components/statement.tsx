@@ -11,7 +11,8 @@ import { buildStatement, type TagLike } from "@/lib/statement";
 import { formatAmount } from "@/lib/utils";
 import { type TokenSymbol } from "@/lib/tokens";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { GlassCard } from "@/components/ui/glass-card";
+import { MonthPicker } from "@/components/ui/month-picker";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { TokenBadge } from "@/components/token-badge";
@@ -88,7 +89,7 @@ export function Statement() {
 
   return (
     <div className="space-y-6">
-      <Card className="space-y-4 p-5">
+      <GlassCard className="space-y-4 p-5">
         <div className="flex flex-wrap gap-1.5">
           {presets.map((p) => {
             const active = rangeFrom === p.from && rangeTo === p.to;
@@ -112,11 +113,11 @@ export function Statement() {
           <div className="flex gap-3">
             <div>
               <Label>From</Label>
-              <Input type="month" value={rangeFrom} onChange={(e) => setFrom(e.target.value)} />
+              <MonthPicker value={rangeFrom} onChange={setFrom} />
             </div>
             <div>
               <Label>To</Label>
-              <Input type="month" value={rangeTo} onChange={(e) => setTo(e.target.value)} />
+              <MonthPicker value={rangeTo} onChange={setTo} />
             </div>
           </div>
           <Button onClick={download} disabled={!hasData || downloading} className="gap-1.5">
@@ -128,7 +129,7 @@ export function Statement() {
             {downloading ? "Building PDF…" : "Export PDF"}
           </Button>
         </div>
-      </Card>
+      </GlassCard>
 
       {isLoading ? (
         <Card className="h-64 animate-pulse bg-muted/30" />
@@ -142,7 +143,18 @@ export function Statement() {
             {tokens.map((sym) => {
               const t = statement.totals[sym]!;
               return (
-                <Card key={sym} className="hairline-top relative overflow-hidden p-5">
+                <GlassCard
+                  key={sym}
+                  interactive
+                  glow={
+                    sym === "USDC"
+                      ? "rgba(39,117,202,0.4)"
+                      : sym === "EURC"
+                        ? "rgba(55,195,155,0.4)"
+                        : undefined
+                  }
+                  className="p-5"
+                >
                   <div className="flex items-center gap-2">
                     <TokenBadge symbol={sym} size="sm" />
                     <span className="text-sm text-muted-foreground">Total {sym}</span>
@@ -153,15 +165,15 @@ export function Statement() {
                   <div className="mt-1 text-xs text-muted-foreground">
                     {t.count} payment{t.count === 1 ? "" : "s"}
                   </div>
-                </Card>
+                </GlassCard>
               );
             })}
           </div>
 
-          <Card className="p-5">
+          <GlassCard className="p-5">
             <h2 className="mb-4 text-sm font-semibold">Monthly income</h2>
             <StatementChart data={statement.byMonth} tokens={tokens} />
-          </Card>
+          </GlassCard>
 
           <div className="grid gap-4 lg:grid-cols-2">
             <BreakdownCard title="By client" rows={statement.byClient} />
@@ -183,7 +195,7 @@ function BreakdownCard({
   capitalize?: boolean;
 }) {
   return (
-    <Card className="overflow-hidden">
+    <GlassCard interactive className="overflow-hidden">
       <div className="border-b border-border px-5 py-3 text-sm font-semibold">
         {title}
       </div>
@@ -205,6 +217,6 @@ function BreakdownCard({
           </tbody>
         </table>
       </div>
-    </Card>
+    </GlassCard>
   );
 }

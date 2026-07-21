@@ -19,6 +19,7 @@ import { type TokenSymbol } from "@/lib/tokens";
 import { ARC, explorerAddress, explorerTx } from "@/config/arc";
 import { cn, formatAmount, shorten, smartDate } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TokenBadge } from "@/components/token-badge";
@@ -281,7 +282,7 @@ function IncomeTable({ rows, onTag }: { rows: Row[]; onTag: (r: Row) => void }) 
   const shown = rows.slice(0, MAX_ROWS);
   const hidden = rows.length - shown.length;
   return (
-    <Card className="overflow-hidden">
+    <GlassCard className="overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -347,7 +348,7 @@ function IncomeTable({ rows, onTag }: { rows: Row[]; onTag: (r: Row) => void }) 
           in totals
         </div>
       )}
-    </Card>
+    </GlassCard>
   );
 }
 

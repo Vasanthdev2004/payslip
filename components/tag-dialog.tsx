@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { MonthPicker } from "@/components/ui/month-picker";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useSetTag, type TagInput } from "@/hooks/use-tags";
@@ -149,11 +150,9 @@ export function TagDialog({
             </div>
             <div>
               <Label htmlFor="tag-period">Period</Label>
-              <Input
-                id="tag-period"
-                type="month"
+              <MonthPicker
                 value={form.period ?? ""}
-                onChange={set("period")}
+                onChange={(v) => setForm((f) => ({ ...f, period: v }))}
               />
             </div>
           </div>
