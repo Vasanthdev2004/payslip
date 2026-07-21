@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ExternalLink, ShieldCheck, TriangleAlert } from "lucide-react";
+import { Anchor, ExternalLink, ShieldCheck, TriangleAlert } from "lucide-react";
 import type { RecomputeResult } from "@/lib/verify";
+import type { AnchorProof } from "@/lib/registry";
 import { explorerTx } from "@/config/arc";
 import { formatAmount, formatDate, shorten } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
@@ -21,10 +22,12 @@ export function VerifyView({
   disclosure,
   fields,
   result,
+  anchor,
 }: {
   disclosure: DisclosureMeta;
   fields: Set<string>;
   result: RecomputeResult;
+  anchor?: AnchorProof | null;
 }) {
   const clients = new Set(
     result.txs.map((t) => t.memo?.client).filter(Boolean),
@@ -143,6 +146,26 @@ export function VerifyView({
               ))}
             </div>
           </div>
+
+          {anchor && (
+            <div className="relative mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-primary/25 bg-primary/5 px-3 py-2.5 text-xs">
+              <Anchor className="size-3.5 shrink-0 text-primary" />
+              <span className="font-medium">Anchored on-chain</span>
+              <span className="text-muted-foreground">
+                {formatDate(anchor.anchoredAt * 1000)}
+              </span>
+              {anchor.txHash && (
+                <a
+                  href={explorerTx(anchor.txHash)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ml-auto inline-flex items-center gap-1 text-primary hover:underline"
+                >
+                  view tx <ExternalLink className="size-3" />
+                </a>
+              )}
+            </div>
+          )}
 
           <div className="relative mt-5 flex items-center gap-2 border-t border-border pt-4">
             <Logo className="text-xs opacity-70" />

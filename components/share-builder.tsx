@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useAccount } from "wagmi";
+import type { Hex } from "viem";
 import { WalletButton } from "@/components/wallet-button";
 import { Check, Copy, ExternalLink, ShieldCheck } from "lucide-react";
 import { usePreviewAddress } from "@/lib/preview";
@@ -15,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TokenBadge } from "@/components/token-badge";
+import { AnchorButton } from "@/components/anchor-button";
 
 const ym = (ts: number) => new Date(ts).toISOString().slice(0, 7);
 
@@ -42,7 +44,12 @@ export function ShareBuilder() {
   const [fields, setFields] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(FIELD_OPTIONS.map((f) => [f.key, f.default])),
   );
-  const [result, setResult] = useState<string | null>(null);
+  const [result, setResult] = useState<{
+    url: string;
+    id: string;
+    digest: Hex;
+    address: string;
+  } | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -89,8 +96,13 @@ export function ShareBuilder() {
         }),
       });
       if (!res.ok) throw new Error("create failed");
-      const { id } = (await res.json()) as { id: string };
-      setResult(`${window.location.origin}/verify/${id}`);
+      const { id, digest } = (await res.json()) as { id: string; digest: Hex };
+      setResult({
+        url: `${window.location.origin}/verify/${id}`,
+        id,
+        digest,
+        address,
+      });
     } catch {
       setError("Couldn't create the link. Try again.");
     } finally {
@@ -110,7 +122,15 @@ export function ShareBuilder() {
   }
 
   if (result) {
-    return <ShareResult url={result} onReset={() => setResult(null)} />;
+    return (
+      <ShareResult
+        url={result.url}
+        disclosureId={result.id}
+        digest={result.digest}
+        owner={result.address}
+        onReset={() => setResult(null)}
+      />
+    );
   }
 
   return (
@@ -217,7 +237,19 @@ export function ShareBuilder() {
   );
 }
 
-function ShareResult({ url, onReset }: { url: string; onReset: () => void }) {
+function ShareResult({
+  url,
+  disclosureId,
+  digest,
+  owner,
+  onReset,
+}: {
+  url: string;
+  disclosureId: string;
+  digest: Hex;
+  owner: string;
+  onReset: () => void;
+}) {
   const [copied, setCopied] = useState(false);
   async function copy() {
     await navigator.clipboard.writeText(url);
@@ -244,6 +276,7 @@ function ShareResult({ url, onReset }: { url: string; onReset: () => void }) {
           {copied ? "Copied" : "Copy"}
         </Button>
       </div>
+      <AnchorButton disclosureId={disclosureId} digest={digest} owner={owner} />
       <div className="mt-4 flex items-center justify-center gap-4 text-sm">
         <a
           href={url}

@@ -39,6 +39,7 @@ model Disclosure {
   periodEnd   String // YYYY-MM
   fields      String // JSON array of visible field keys
   txHashes    String // JSON array of included tx hashes
+  anchorTxHash String? // F6: the KredRegistry anchor tx, if the owner anchored on-chain (display link only; trust comes from the contract read)
   createdAt   DateTime @default(now())
 
   @@index([address])

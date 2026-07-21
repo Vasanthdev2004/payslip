@@ -4,6 +4,7 @@ import type { Address, Hex } from "viem";
 import { db } from "@/lib/db";
 import { serverClient } from "@/lib/rpc";
 import { recompute } from "@/lib/verify";
+import { disclosureDigest, readAnchor } from "@/lib/registry";
 import { VerifyView } from "@/components/verify-view";
 
 // Cache each verify render briefly so a flood on one link can't amplify into an RPC
@@ -38,7 +39,23 @@ export default async function VerifyPage({
     /* corrupt record — recompute will simply verify nothing */
   }
 
-  const result = await recompute(serverClient(), d.address as Address, txHashes);
+  const client = serverClient();
+  const result = await recompute(client, d.address as Address, txHashes);
+
+  // F6: is this exact disclosure anchored on-chain? Digest is recomputed from the
+  // stored content and checked against the KredRegistry — the DB is never trusted.
+  const digest = disclosureDigest({
+    address: d.address,
+    periodStart: d.periodStart,
+    periodEnd: d.periodEnd,
+    txHashes,
+  });
+  const anchor = await readAnchor(
+    client,
+    d.address as Address,
+    digest,
+    d.anchorTxHash,
+  );
 
   return (
     <VerifyView
@@ -50,6 +67,7 @@ export default async function VerifyPage({
       }}
       fields={new Set(fields)}
       result={result}
+      anchor={anchor}
     />
   );
 }

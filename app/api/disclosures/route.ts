@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { isAddress } from "viem";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { disclosureDigest } from "@/lib/registry";
 
 export const dynamic = "force-dynamic";
 
@@ -28,15 +29,25 @@ export async function POST(req: NextRequest) {
     );
   }
   const d = parsed.data;
+  const address = d.address.toLowerCase();
+  const txHashes = [...new Set(d.txHashes.map((h) => h.toLowerCase()))];
   const created = await db.disclosure.create({
     data: {
-      address: d.address.toLowerCase(),
+      address,
       periodStart: d.periodStart,
       periodEnd: d.periodEnd,
       label: d.label ?? null,
       fields: JSON.stringify(d.fields),
-      txHashes: JSON.stringify([...new Set(d.txHashes.map((h) => h.toLowerCase()))]),
+      txHashes: JSON.stringify(txHashes),
     },
   });
-  return NextResponse.json({ id: created.id });
+  // Server-computed digest the owner anchors on-chain (F6). Computed from the exact
+  // stored content so it matches the recompute at /verify — the client never derives it.
+  const digest = disclosureDigest({
+    address,
+    periodStart: d.periodStart,
+    periodEnd: d.periodEnd,
+    txHashes,
+  });
+  return NextResponse.json({ id: created.id, digest });
 }

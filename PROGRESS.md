@@ -42,7 +42,14 @@ Running log of milestones. Chain is the source of truth; DB is metadata only.
     backing txs always shown (that's what makes it verifiable).
   - Verified end-to-end against a real Arc address: recomputed totals render, an
     unverifiable tx is honestly excluded, bogus id 404s, tsc clean.
-- [ ] **M6 (stretch) — KredRegistry anchor (F6)**
+- [x] **M6 (stretch) — KredRegistry anchor (F6)** ✅ (built; deploy = one command)
+  - Minimal `KredRegistry.sol`: `anchor(bytes32 digest)` → `anchoredAt[msg.sender][digest]`
+    = `block.timestamp` (idempotent, keyed by sender; no amounts/PII ever on-chain).
+  - Server-computed disclosure digest (returned at create, recomputed at `/verify`) so the
+    anchored value and the verify check can't drift; owner anchors from their wallet on `/share`.
+  - `/verify` reads the anchor from the **contract** (never the DB) → "Anchored on-chain · date · tx".
+  - Dormant until `NEXT_PUBLIC_KRED_REGISTRY_ADDRESS` is set; deploy via
+    `npm run deploy:registry` (solc compile + viem deploy to Arc).
 - [~] **M7 — deploy ✅ (Railway) · polish/demo remaining**
   - Live: https://kred.today
   - Railway project `kred` + managed Postgres (persistent volume); Prisma on
