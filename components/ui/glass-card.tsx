@@ -1,14 +1,16 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-/** Base frosted-glass surface classes (no padding — add your own). */
+/** Base frosted-glass surface classes (no padding — add your own). `isolate` +
+ *  the decor's negative z-index keep the sheen/glow behind content WITHOUT an inner
+ *  wrapper, so caller layout classes (space-y, flex, grid, gap, p) work normally. */
 export const glassClass =
-  "group relative overflow-hidden rounded-xl border border-border/70 bg-card/60 shadow-md backdrop-blur-xl transition-all duration-300";
+  "group relative isolate overflow-hidden rounded-xl border border-border/70 bg-card/60 shadow-md backdrop-blur-xl transition-all duration-300";
 
 /**
  * Frosted-glass surface: translucent + backdrop-blur, a thin light seam along the
  * top edge, and an optional colored corner glow. `interactive` adds the lift + glow
- * hover. Content is auto-stacked above the decorative layers.
+ * hover. Behaves like a plain <div> for layout — the decor sits behind content.
  */
 export const GlassCard = React.forwardRef<
   HTMLDivElement,
@@ -32,20 +34,20 @@ export const GlassCard = React.forwardRef<
       )}
       {...props}
     >
+      {children}
       {sheen && (
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-foreground/15 to-transparent"
+          className="pointer-events-none absolute inset-x-3 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-foreground/15 to-transparent"
         />
       )}
       {glow && (
         <span
           aria-hidden
-          className="pointer-events-none absolute -right-6 -top-8 size-28 rounded-full opacity-50 blur-2xl transition-opacity duration-300 group-hover:opacity-90"
+          className="pointer-events-none absolute -right-6 -top-8 -z-10 size-28 rounded-full opacity-50 blur-2xl transition-opacity duration-300 group-hover:opacity-90"
           style={{ background: `radial-gradient(circle, ${glow} 0%, transparent 70%)` }}
         />
       )}
-      <div className="relative">{children}</div>
     </div>
   ),
 );
